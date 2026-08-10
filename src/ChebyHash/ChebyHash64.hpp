@@ -10,4 +10,3 @@
 
 void round(std::uint64_t& x, std::uint64_t& y);
 std::uint64_t mix(std::uint64_t x, std::uint64_t y);
-void ChebyHashTester();
