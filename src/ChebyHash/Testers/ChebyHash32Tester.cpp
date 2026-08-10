@@ -8,8 +8,9 @@
 void ChebyHash32Tester()
 {
     auto start = std::chrono::high_resolution_clock::now();
-    
+    uint32_t last_hash = 0;
     auto total = std::uint64_t{0};
+
     constexpr std::uint32_t TEST_COUNT = 10'000'000;
 
     auto attempt_start = std::chrono::high_resolution_clock::now();
@@ -35,6 +36,7 @@ void ChebyHash32Tester()
         
             auto hashA = mix(inputA, y);
             auto hashB = mix(inputB, y);
+            last_hash = hashB;
 
             auto diff = std::__popcount(hashA ^ hashB);
 
@@ -49,5 +51,6 @@ void ChebyHash32Tester()
     auto duration = std::chrono::duration<double>(end - start);
 
     std::cout << "Average: " << average << std::endl 
-              << "Duration: " << duration.count() << "s." << std::endl;
+              << "Duration: " << duration.count() << "s." << std::endl
+              << "Last hash: " << std::hex << last_hash;
 }
