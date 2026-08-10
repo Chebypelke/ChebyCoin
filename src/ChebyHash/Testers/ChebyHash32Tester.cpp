@@ -1,4 +1,5 @@
 #include "ChebyHashTesters.hpp"
+#include "../ChebyHash32.hpp"
 #include <bit>
 #include <cstdint>
 #include <iostream>
