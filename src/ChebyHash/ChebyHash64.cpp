@@ -16,7 +16,7 @@ void round(std::uint64_t& x, std::uint64_t& y)
     x += y;
 }
 
-std::uint32_t mix(std::uint64_t x, std::uint64_t y)
+std::uint64_t mix(std::uint64_t x, std::uint64_t y)
 {
     for (auto i = 0; i < ROUND_COUNT; ++i)
     {
