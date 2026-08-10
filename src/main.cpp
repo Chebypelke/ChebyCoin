@@ -1,6 +1,6 @@
-#include "ChebyHash/ChebyHash.hpp"
+#include "ChebyHash/Testers/ChebyHashTesters.hpp"
 
 int main()
 {
-    ChebyHashTester();
+    ChebyHash32Tester();
 }

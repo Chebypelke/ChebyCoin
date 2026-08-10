@@ -1,10 +1,10 @@
-#include "ChebyHash.hpp"
+#include "ChebyHashTesters.hpp"
 #include <bit>
 #include <cstdint>
 #include <iostream>
 #include <chrono>
 
-void ChebyHashTester()
+void ChebyHash32Tester()
 {
     auto start = std::chrono::high_resolution_clock::now();
     

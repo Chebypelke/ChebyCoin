@@ -1,4 +1,4 @@
-#include "ChebyHash.hpp"
+#include "ChebyHash32.hpp"
 #include <bit>
 #include <cstdint>
 
