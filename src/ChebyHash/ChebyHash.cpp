@@ -2,7 +2,7 @@
 #include <bit>
 #include <cstdint>
 
-constexpr auto ROUND_COUNT = 8;
+constexpr auto ROUND_COUNT = 32;
 
 void round(std::uint32_t& x, std::uint32_t& y)
 {

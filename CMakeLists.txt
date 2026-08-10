@@ -4,5 +4,6 @@ project(ChebyCoin)
 
 add_executable(ChebyCoin
     src/ChebyHash/ChebyHash.cpp
+    src/ChebyHash/ChebyHashTester.cpp
     src/main.cpp
 )

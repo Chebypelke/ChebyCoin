@@ -2,5 +2,12 @@
 
 #include <cstdint>
 
+// WARNING:
+// Experimental educational hash.
+// NOT cryptographically secure.
+// Do not use for real passwords, signatures,
+// authentication, key derivation, or secure storage.
+
 void round(std::uint32_t& x, std::uint32_t& y);
 std::uint32_t mix(std::uint32_t x, std::uint32_t y);
+void ChebyHashTester();
