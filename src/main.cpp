@@ -2,5 +2,5 @@
 
 int main()
 {
-    ChebyHash32Tester();
+    ChebyHash64Tester();
 }
