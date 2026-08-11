@@ -9,9 +9,6 @@
 // Do not use for real passwords, signatures,
 // authentication, key derivation, or secure storage.
 
-
-
-
 class ChebyHash32
 {
 private:
