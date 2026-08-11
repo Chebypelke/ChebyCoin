@@ -11,5 +11,6 @@ add_executable(ChebyCoin
     src/ChebyChain/Blockchain.cpp
     src/ChebyChain/Testers/ChebyChainTester.cpp
     src/Utils/RandomStringGenerator.cpp
+    src/Utils/ScreenUtils.cpp
     src/main.cpp
 )

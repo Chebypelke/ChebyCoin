@@ -1,5 +1,6 @@
 #include "ChebyChainTesters.hpp"
 #include "../ChebyChain.hpp"
+#include "../../Utils/Utils.hpp"
 #include <cstddef>
 #include <iostream>
 #include <limits>
@@ -16,7 +17,7 @@ void ChebyChain::Testers::ChebyChainTester()
 
     while (run)
     {
-        std::cout << "Welcome to ChebyChain tester!" << std::endl;
+        std::cout << "===== ChebyChain Tester =====" << std::endl;
 
         std::cout << "1. New block" << std::endl;
         std::cout << "2. Blocks count" << std::endl;
@@ -33,7 +34,7 @@ void ChebyChain::Testers::ChebyChainTester()
 
         switch (choice) {
         case 1:
-            
+            clearScreen();
             std::cout << "Type block data: ";
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
@@ -47,10 +48,12 @@ void ChebyChain::Testers::ChebyChainTester()
             blockchain.addBlock(data);
             break;
         case 2: 
+            clearScreen();
             std::cout << "Blocks count: " << blockchain.getBlockCount() << std::endl;
             break; 
         case 3:
         {
+            clearScreen();
             std::cout << "Enter block index: ";
             
             if (!(std::cin >> blockIndex)) {
