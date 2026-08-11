@@ -1,6 +1,7 @@
 #include "ChebyHash32.hpp"
 #include <bit>
 #include <cstdint>
+#include <string_view>
 
 constexpr auto ROUND_COUNT = 32;
 
@@ -24,4 +25,20 @@ std::uint32_t mix(std::uint32_t x, std::uint32_t y)
     }
 
     return x;
+}
+
+std::uint32_t hash(std::string_view input)
+{
+    std::uint32_t x = 0;
+    std::uint32_t y = 0;
+
+    for (std::size_t i = 0; i < input.size(); ++i)
+    {
+        if (i % 2 == 0)
+            x ^= static_cast<std::uint32_t>(input[i]);
+        else
+            y ^= static_cast<std::uint32_t>(input[i]);
+    }
+
+    return mix(x, y);
 }
