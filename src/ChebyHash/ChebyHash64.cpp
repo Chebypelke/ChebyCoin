@@ -1,10 +1,10 @@
-#include "ChebyHash64.hpp"
+#include "ChebyHash.hpp"
 #include <bit>
 #include <cstdint>
 
 constexpr auto ROUND_COUNT = 32;
 
-void ChebyHash64::round(std::uint64_t& x, std::uint64_t& y)
+void ChebyHash::ChebyHash64::round(std::uint64_t& x, std::uint64_t& y)
 {
     y += x;
     x ^= y;
@@ -16,7 +16,7 @@ void ChebyHash64::round(std::uint64_t& x, std::uint64_t& y)
     x += y;
 }
 
-std::uint64_t ChebyHash64::mix(std::uint64_t x, std::uint64_t y)
+std::uint64_t ChebyHash::ChebyHash64::mix(std::uint64_t x, std::uint64_t y)
 {
     for (auto i = 0; i < ROUND_COUNT; ++i)
     {
@@ -26,7 +26,7 @@ std::uint64_t ChebyHash64::mix(std::uint64_t x, std::uint64_t y)
     return x;
 }
 
-std::uint64_t ChebyHash64::hash(std::string_view input)
+std::uint64_t ChebyHash::ChebyHash64::hash(std::string_view input)
 {
     std::uint64_t x = 0;
     std::uint64_t y = 0;

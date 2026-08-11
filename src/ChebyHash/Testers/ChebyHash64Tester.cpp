@@ -1,5 +1,5 @@
 #include "ChebyHashTesters.hpp"
-#include "../ChebyHash64.hpp"
+#include "../ChebyHash.hpp"
 #include "../../Utils/Utils.hpp"
 #include <bit>
 #include <cstdint>
@@ -43,8 +43,8 @@ void ChebyHash64Tester()
 
             inputB[byte] ^= static_cast<char>(1u << bit_in_byte);
 
-            auto hashA = ChebyHash64::hash(inputA);
-            auto hashB = ChebyHash64::hash(inputB);
+            auto hashA = ChebyHash::ChebyHash64::hash(inputA);
+            auto hashB = ChebyHash::ChebyHash64::hash(inputB);
 
             auto diff = std::__popcount(hashA ^ hashB);
 
