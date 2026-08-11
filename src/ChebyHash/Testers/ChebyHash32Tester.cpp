@@ -6,7 +6,7 @@
 #include <iostream>
 #include <chrono>
 
-void ChebyHash32Tester()
+void ChebyHash::Testers::ChebyHash32Tester()
 {
     auto start = std::chrono::high_resolution_clock::now();
     uint64_t last_hash = 0;

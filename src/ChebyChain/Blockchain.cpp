@@ -2,13 +2,13 @@
 #include <chrono>
 #include <cstddef>
 
-std::uint64_t Blockchain::getCurrentTimestamp() const
+std::uint64_t ChebyChain::Blockchain::getCurrentTimestamp() const
 {
     return std::chrono::duration_cast<std::chrono::seconds>(
             std::chrono::system_clock::now().time_since_epoch()).count();
 }
 
-Blockchain::Blockchain()
+ChebyChain::Blockchain::Blockchain()
 {
     chain.emplace_back(
     0,
@@ -18,7 +18,7 @@ Blockchain::Blockchain()
     );
 }
 
-void Blockchain::addBlock(const std::string& data)
+void ChebyChain::Blockchain::addBlock(const std::string& data)
 {
     chain.emplace_back(
     chain.back().getBlockIndex() + 1,
@@ -28,11 +28,11 @@ void Blockchain::addBlock(const std::string& data)
     );
 }
 
-std::size_t Blockchain::getBlockCount() const { return chain.size(); }
+std::size_t ChebyChain::Blockchain::getBlockCount() const { return chain.size(); }
 
-const Block& Blockchain::getBlock(std::size_t index) const { return chain.at(index); }
+const ChebyChain::Block& ChebyChain::Blockchain::getBlock(std::size_t index) const { return chain.at(index); }
 
-bool Blockchain::isValid() const
+bool ChebyChain::Blockchain::isValid() const
 {
     for (std::size_t blocks = 1; blocks < chain.size(); ++blocks)
     {
