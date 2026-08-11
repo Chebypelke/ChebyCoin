@@ -5,7 +5,7 @@
 
 constexpr auto ROUND_COUNT = 32;
 
-void round(std::uint32_t& x, std::uint32_t& y)
+void ChebyHash32::round(std::uint32_t& x, std::uint32_t& y)
 {
     y += x;
     x ^= y;
@@ -17,7 +17,7 @@ void round(std::uint32_t& x, std::uint32_t& y)
     x += y;
 }
 
-std::uint32_t mix(std::uint32_t x, std::uint32_t y)
+std::uint32_t ChebyHash32::mix(std::uint32_t x, std::uint32_t y)
 {
     for (auto i = 0; i < ROUND_COUNT; ++i)
     {
@@ -27,7 +27,7 @@ std::uint32_t mix(std::uint32_t x, std::uint32_t y)
     return x;
 }
 
-std::uint32_t hash(std::string_view input)
+std::uint32_t ChebyHash32::hash(std::string_view input)
 {
     std::uint32_t x = 0;
     std::uint32_t y = 0;
