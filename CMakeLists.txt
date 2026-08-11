@@ -7,5 +7,6 @@ add_executable(ChebyCoin
     src/ChebyHash/ChebyHash64.cpp
     src/ChebyHash/Testers/ChebyHash32Tester.cpp
     src/ChebyHash/Testers/ChebyHash64Tester.cpp
+    src/Utils/RandomStringGenerator.cpp
     src/main.cpp
 )
