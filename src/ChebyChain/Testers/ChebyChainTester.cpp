@@ -22,6 +22,7 @@ void ChebyChain::Testers::ChebyChainTester()
         std::cout << "1. New block" << std::endl;
         std::cout << "2. Blocks count" << std::endl;
         std::cout << "3. Block by index" << std::endl;
+        std::cout << "4. Validate blockchain" << std::endl;
         std::cout << "0. Exit" << std::endl;
 
         std::cout << "Your choice: "; 
@@ -65,11 +66,26 @@ void ChebyChain::Testers::ChebyChainTester()
             
             const Block& block = blockchain.getBlock(blockIndex);
             std::cout << "Block index: " << block.getBlockIndex() << std::endl;
-            std::cout << "Block hash: " << block.getBlockHash() << std::endl;
-            std::cout << "Block previous hash: " << block.getBlockPreviousHash() << std::endl;
+            std::cout << "Block hash: " << block.getBlockHash()
+                                        << " (" << std::hex << block.getBlockHash() << ")" << std::dec
+                                        << std::endl;
+            std::cout << "Block previous hash: " << block.getBlockPreviousHash() 
+                                                 << " (" << std::hex << block.getBlockPreviousHash() << ")" << std::dec
+                                                 << std::endl;;
 
             break; 
         }
+        case 4:
+            clearScreen();
+
+            if (!blockchain.isValid())
+            {
+                std::cout << "Blockchain is invalid!" << std::endl;
+                break;
+            }
+            
+            std::cout << "Blockchain is valid!" << std::endl;
+            break;
         case 0:
             run = false;
             break;

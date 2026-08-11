@@ -31,3 +31,23 @@ void Blockchain::addBlock(const std::string& data)
 std::size_t Blockchain::getBlockCount() const { return chain.size(); }
 
 const Block& Blockchain::getBlock(std::size_t index) const { return chain.at(index); }
+
+bool Blockchain::isValid() const
+{
+    for (std::size_t blocks = 1; blocks < chain.size(); ++blocks)
+    {
+        const Block& current = chain[blocks];
+        const Block& previous = chain[blocks - 1];
+
+        if (current.getBlockPreviousHash() != previous.getBlockHash())
+        {
+            return false;
+        }
+        else if (current.getBlockHash() != current.calculateHash())
+        {
+            return false;
+        }
+    }
+
+    return true;
+}

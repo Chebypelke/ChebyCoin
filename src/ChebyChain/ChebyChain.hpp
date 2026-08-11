@@ -41,4 +41,5 @@ public:
     void addBlock(const std::string& data);
     std::size_t getBlockCount() const;
     const Block& getBlock(std::size_t index) const;
+    bool isValid() const;
 };
