@@ -28,4 +28,23 @@ namespace ChebyHash
     public:
         static std::uint64_t hash(std::string_view input);
     };
+    class ChebyHash128
+    {
+    public:
+        struct Hash128
+        {
+            std::uint64_t high;
+            std::uint64_t low;
+        };
+
+        static Hash128 add(const Hash128& valueOne, const Hash128& valueTwo);
+        static Hash128 xorValues(const Hash128& valueOne, const Hash128& valueTwo);
+        static Hash128 rotl(const Hash128& value, unsigned int shift);
+        static Hash128 rotr(const Hash128& value, unsigned int shift);
+    private:
+        static void round(Hash128& x, Hash128& y);
+        static Hash128 mix(Hash128 x, Hash128 y);
+    public:
+        static Hash128 hash(std::string_view input);
+    };
 };

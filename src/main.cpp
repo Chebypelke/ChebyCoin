@@ -1,5 +1,6 @@
-#include "ChebyChain/Testers/ChebyChainTesters.hpp"
+#include "ChebyHash/Testers/ChebyHashTesters.hpp"
+
 int main()
 {
-    ChebyChain::Testers::ChebyChainTester();
+    ChebyHash::Testers::ChebyHash128Tester();
 }
