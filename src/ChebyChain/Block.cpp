@@ -22,3 +22,4 @@ Block::Block(std::uint64_t blockIndex, std::uint64_t blockTimestamp, std::string
 
 std::uint64_t Block::getBlockIndex() const { return index; }
 std::uint64_t Block::getBlockHash() const { return hash; }
+std::uint64_t Block::getBlockPreviousHash() const { return previousHash; }
