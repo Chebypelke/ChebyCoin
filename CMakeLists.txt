@@ -18,6 +18,9 @@ add_executable(ChebyCoin
     # ChebyCoinApp
     src/ChebyCoinApp/MainMenu.cpp
     src/ChebyCoinApp/App.cpp
+    # ChebySignature
+    src/ChebySignature/ChebySignature.cpp
+    src/ChebySignature/Testers/ChebySignatureTester.cpp 
     # Utils
     src/Utils/RandomStringGenerator.cpp
     src/Utils/ScreenUtils.cpp

@@ -21,6 +21,123 @@ ChebyHash::ChebyHash128::Hash128 ChebyHash::ChebyHash128::xorValues(const Hash12
     return Hash128{high, low};
 }   
 
+ChebyHash::ChebyHash128::Hash128 ChebyHash::ChebyHash128::subtract(const Hash128& valueOne, const Hash128& valueTwo)
+{
+    std::uint64_t low = valueOne.low - valueTwo.low;
+
+    bool borrow = low > valueOne.low;
+
+    std::uint64_t high = valueOne.high - valueTwo.high - borrow;
+
+    return Hash128{high, low};
+}  
+
+bool ChebyHash::ChebyHash128::lessThan(const Hash128& valueOne, const Hash128& valueTwo)
+{
+    if (valueOne.high < valueTwo.high)
+    {
+        return true;
+    }
+    
+    if (valueOne.high > valueTwo.high)
+    {
+        return false;
+    }
+
+    return valueOne.low < valueTwo.low;
+}
+
+bool ChebyHash::ChebyHash128::isZero(const Hash128& value)
+{
+    return value.high == 0 && value.low == 0;
+}
+
+ChebyHash::ChebyHash128::Hash128 ChebyHash::ChebyHash128::multiply(const Hash128& valueOne, const Hash128& valueTwo)
+{
+    unsigned __int128 lowProduct = static_cast<unsigned __int128>(valueOne.low) * valueTwo.low;
+
+    std::uint64_t low = static_cast<std::uint64_t>(lowProduct);
+
+    std::uint64_t high = static_cast<std::uint64_t>(lowProduct >> 64);
+
+    high += valueOne.high * valueTwo.low;
+    high += valueOne.low * valueTwo.high;
+
+    return Hash128{high, low};
+}
+
+ChebyHash::ChebyHash128::Hash128 ChebyHash::ChebyHash128::shiftLeft(const Hash128& value, unsigned int shift)
+{
+    if (shift >= 128)
+    {
+        return Hash128{0, 0};
+    }
+
+    if (shift == 0)
+    {
+        return value;
+    }
+
+    if (shift < 64)
+    {
+        return Hash128{(value.high << shift) | (value.low >> (64 - shift)), value.low << shift};
+    }
+
+    return Hash128{value.low << (shift - 64), 0};
+
+}
+
+ChebyHash::ChebyHash128::Hash128 ChebyHash::ChebyHash128::shiftRight(const Hash128& value, unsigned int shift)
+{
+    if (shift >= 128)
+    {
+        return Hash128{0, 0};
+    }
+
+    if (shift == 0)
+    {
+        return value;
+    }
+
+    if (shift < 64)
+    {
+        return Hash128{value.high >> shift, (value.low >> shift) | (value.high << (64 - shift))};
+    }
+
+    return Hash128{0, value.high >> (shift - 64)};
+}
+
+ChebyHash::ChebyHash128::Hash128 ChebyHash::ChebyHash128::mod(const Hash128& value, const Hash128& divisor)
+{
+    if (isZero(divisor))
+    {
+        return Hash128{0, 0};
+    }
+
+    Hash128 remainder{0, 0};
+
+    for (int bit = 127; bit >= 0; --bit)
+    {
+        remainder = shiftLeft(remainder, 1);
+
+        if (bit >= 64)
+        {
+            remainder.low |= (value.high >> (bit - 64)) & 1;
+        }
+        else
+        {
+            remainder.low |= (value.low >> bit) & 1;
+        }
+
+        if (!lessThan(remainder, divisor))
+        {
+            remainder = subtract(remainder, divisor);
+        }
+    }
+
+    return remainder;
+}
+
 ChebyHash::ChebyHash128::Hash128 ChebyHash::ChebyHash128::rotl(const Hash128& value, unsigned int shift)
 {
     Hash128 result = value;

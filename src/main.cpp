@@ -1,6 +1,6 @@
-#include "ChebyHash/Testers/ChebyHashTesters.hpp"
+#include "ChebySignature/Testers/ChebySignatureTesters.hpp"
 
 int main()
 {
-    ChebyHash::Testers::ChebyHash128Tester();
+    ChebySignature::Testers::ChebySignatureTester();
 }
