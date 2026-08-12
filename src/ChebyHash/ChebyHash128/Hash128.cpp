@@ -53,37 +53,43 @@ bool ChebyHash::ChebyHash128::isZero(const Hash128& value)
 }
 
 ChebyHash::ChebyHash128::SignedHash128 ChebyHash::ChebyHash128::subtractSigned(
-    const Hash128& valueOne, const bool& valueOneNegative, const Hash128& valueTwo, const bool& valueTwoNegative
+    const Hash128& valueOne, bool valueOneNegative,
+    const Hash128& valueTwo, bool valueTwoNegative
 )
 {
+    if (isZero(valueOne))
+    {
+        return SignedHash128{valueTwo, valueTwoNegative && !isZero(valueTwo)};
+    }
+
+    if (isZero(valueTwo))
+    {
+        return SignedHash128{valueOne, valueOneNegative};
+    }
+
     if (valueOneNegative != valueTwoNegative)
     {
-        Hash128 value = ChebyHash::ChebyHash128::add(valueOne, valueTwo);
+        Hash128 value = add(valueOne, valueTwo);
 
         return SignedHash128{value, valueOneNegative};
     }
-    else
+
+    if (lessThan(valueOne, valueTwo))
     {
-        std::uint64_t low = valueOne.low - valueTwo.low;
+        Hash128 value = subtract(valueTwo, valueOne);
 
-        bool borrow = low > valueOne.low;
-
-        std::uint64_t high = valueOne.high - valueTwo.high - borrow;
-
-        if (lessThan(valueOne, valueTwo))
-        {
-            low = valueTwo.low - valueOne.low;
-            borrow = low > valueTwo.low;
-            high = valueTwo.high - valueOne.high - borrow;
-
-            return SignedHash128{Hash128{high, low}, !valueOneNegative};
-        }
-        else
-        {
-            return SignedHash128{Hash128{high, low}, valueOneNegative};
-        }
+        return SignedHash128{value, !valueOneNegative};
     }
-}  
+
+    Hash128 value = subtract(valueOne, valueTwo);
+
+    if (isZero(value))
+    {
+        return SignedHash128{Hash128{0, 0}, false};
+    }
+
+    return SignedHash128{value, valueOneNegative};
+}
 
 ChebyHash::ChebyHash128::Hash128 ChebyHash::ChebyHash128::multiply(const Hash128& valueOne, const Hash128& valueTwo)
 {
@@ -238,3 +244,53 @@ ChebyHash::ChebyHash128::Hash128 ChebyHash::ChebyHash128::rotr(const Hash128& va
     return Hash128{newHigh, newLow};
 }
 
+ChebyHash::ChebyHash128::Hash128 ChebyHash::ChebyHash128::multiplyMod(
+    const Hash128& valueOne, const Hash128& valueTwo, const Hash128& modulus
+)
+{
+    if (isZero(modulus))
+    {
+        return Hash128{0, 0};
+    }
+
+    Hash128 result{0, 0};
+
+    Hash128 value = mod(valueOne, modulus);
+    Hash128 multiplier = valueTwo;
+
+    while (!isZero(multiplier))
+    {
+        if ((multiplier.low & 1ULL) != 0)
+        {
+            result = addMod(result, value, modulus);
+        }
+
+        value = addMod(value, value, modulus);
+
+        multiplier = shiftRight(multiplier, 1);
+    }
+
+    return result;
+}
+
+ChebyHash::ChebyHash128::Hash128 ChebyHash::ChebyHash128::addMod(
+    const Hash128& valueOne, const Hash128& valueTwo, const Hash128& modulus
+)
+{
+    if (isZero(modulus))
+    {
+        return Hash128{0, 0};
+    }
+
+    Hash128 aMod = mod(valueOne, modulus);
+    Hash128 bMod = mod(valueTwo, modulus);
+    
+    Hash128 mMinusB = subtract(modulus, bMod);
+
+    if (!lessThan(aMod, mMinusB))
+    {
+        return subtract(aMod, mMinusB);
+    }
+
+    return add(aMod, bMod);
+}

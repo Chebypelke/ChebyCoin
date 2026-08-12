@@ -36,23 +36,33 @@ void ChebySignature::Testers::ChebySignatureTester()
         {
             clearScreen();
 
-            Hash128 messageHash{0, 5};
+            Hash128 messageHash{2284252, 148867};
 
-            PrivateKey privateKey{Hash128{0, 33}, 7};
+            auto keys = Signature::generateKeyPair();
 
-            PublicKey publicKey{Hash128{0, 33}, 3};
+            PrivateKey privateKey = keys.privateKey;
+
+            PublicKey publicKey = keys.publicKey;
 
             Hash128 signature = Signature::sign(messageHash, privateKey);
 
             Hash128 verified = Signature::verify(signature, publicKey);
 
-            std::cout << "Signature: "
-                      << signature.high << ":"
-                      << signature.low << std::endl;
+            std::cout << "Original:  "
+                      << messageHash.high << ":" << messageHash.low 
+                      << std::endl;
 
-            std::cout << "Verified: "
-                      << verified.high << ":"
-                      << verified.low << std::endl;
+            std::cout << "Signature: "
+                      << signature.high << ":" << signature.low 
+                      << std::endl;
+
+            std::cout << "Verified:  "
+                      << verified.high << ":" << verified.low 
+                      << std::endl;
+
+            std::cout << "Result: "
+                      << (verified.high == messageHash.high && verified.low == messageHash.low ? "PASS" : "FAIL")
+                      << std::endl;
             break;
         }
         case 0:

@@ -56,7 +56,7 @@ namespace ChebyHash
         static bool lessThan(const Hash128& valueOne, const Hash128& valueTwo);
         static bool isZero(const Hash128& value);
         static SignedHash128 subtractSigned(
-            const Hash128& valueOne, const bool& valueOneNegative, const Hash128& valueTwo, const bool& valueTwoNegative
+            const Hash128& valueOne, bool valueOneNegative, const Hash128& valueTwo, bool valueTwoNegative
         );
         static Hash128 multiply(const Hash128& valueOne, const Hash128& valueTwo);
         static Hash128 shiftLeft(const Hash128& value, unsigned int shift);
@@ -65,6 +65,8 @@ namespace ChebyHash
         static Hash128 mod(const Hash128& value, const Hash128& divisor);
         static Hash128 rotl(const Hash128& value, unsigned int shift);
         static Hash128 rotr(const Hash128& value, unsigned int shift);
+        static Hash128 multiplyMod(const Hash128& valueOne, const Hash128& valueTwo, const Hash128& modulus);
+        static Hash128 addMod(const Hash128& valueOne, const Hash128& valueTwo, const Hash128& modulus);
         
     private:
         static void round(Hash128& x, Hash128& y);

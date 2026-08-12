@@ -2,7 +2,9 @@
 #include "../Utils/Utils.hpp"
 #include <cmath>
 
-ChebySignature::Hash128 ChebySignature::Signature::modularPower(Hash128 base, Hash128 exponent, Hash128 modulus)
+ChebySignature::Hash128 ChebySignature::Signature::modularPower(
+    Hash128 base, Hash128 exponent, const Hash128& modulus
+)
 {
     Hash128 result{0, 1};
 
@@ -10,64 +12,109 @@ ChebySignature::Hash128 ChebySignature::Signature::modularPower(Hash128 base, Ha
 
     while (!ChebyHash::ChebyHash128::isZero(exponent))
     {
-        if ((exponent.low & 1) != 0)
+        if ((exponent.low & 1ULL) != 0)
         {
-            result = ChebyHash::ChebyHash128::mod(ChebyHash::ChebyHash128::multiply(result, base), modulus);
+            result = ChebyHash::ChebyHash128::multiplyMod(
+                result,
+                base,
+                modulus
+            );
         }
 
-        base = ChebyHash::ChebyHash128::mod(ChebyHash::ChebyHash128::multiply(base, base), modulus);
+        base = ChebyHash::ChebyHash128::multiplyMod(
+            base,
+            base,
+            modulus
+        );
 
-        exponent = ChebyHash::ChebyHash128::shiftRight(exponent, 1);
+        exponent =
+            ChebyHash::ChebyHash128::shiftRight(exponent, 1);
     }
 
     return result;
 }
 
-ChebySignature::Hash128 ChebySignature::Signature::modularInverse(Hash128 value, Hash128 modulus)
+ChebySignature::Hash128 ChebySignature::Signature::modularInverse(const Hash128& value, const Hash128& modulus)
 {
-    auto oldR = modulus;
-    auto r = value;
-
-    bool oldTNegative = false;
-    Hash128 oldT{0, 0};
-    bool tNegative = false;
-    Hash128 t{0, 1};
-
-    while (!ChebyHash::ChebyHash128::isZero(r))
+    if (ChebyHash::ChebyHash128::isZero(modulus))
     {
-        auto quotient = ChebyHash::ChebyHash128::divide(oldR, r).quotient;
-
-        // Fucking dog shit
-        // Эта херня ищет НОД
-        auto temp = oldR;
-        oldR = r;
-        r = ChebyHash::ChebyHash128::subtract(temp, ChebyHash::ChebyHash128::multiply(quotient, r));
-
-        // А эта херня ищет коэффициент, который станет inverse.
-        temp = oldT;
-        bool tempNegative = oldTNegative;
-        oldT = t;
-        Hash128 multiplied = ChebyHash::ChebyHash128::multiply(quotient, t);
-        bool multipliedNegative = tNegative;
-        auto tSubstracted = ChebyHash::ChebyHash128::subtractSigned(temp, tempNegative, multiplied, multipliedNegative);
-        t = tSubstracted.value;
-        tNegative = tSubstracted.negative;
+        return Hash128{0, 0};
     }
 
-    if (oldR.high != 0 || oldR.low != 1)
+    Hash128 valueMod = ChebyHash::ChebyHash128::mod(value, modulus);
+
+    if (ChebyHash::ChebyHash128::isZero(valueMod))
     {
-        return Hash128{0, 0}; // inverse - нема
+        return Hash128{0, 0};
     }
 
-    if (oldTNegative)
+    if (valueMod.high != 0 || valueMod.low != 65537)
     {
-        oldT = ChebyHash::ChebyHash128::subtract(modulus, oldT);
-        oldTNegative = false;
+        return Hash128{0, 0};
     }
 
-    oldT = ChebyHash::ChebyHash128::mod(oldT, modulus);
+    constexpr std::uint64_t e = 65537;
 
-    return oldT;
+    ChebyHash::ChebyHash128::DivisionResult division =
+        ChebyHash::ChebyHash128::divide(
+            modulus,
+            Hash128{0, e}
+        );
+
+    Hash128 quotient = division.quotient;
+    Hash128 remainder = division.remainder;
+
+    if (ChebyHash::ChebyHash128::isZero(remainder))
+    {
+        return Hash128{0, 0};
+    }
+
+    std::uint64_t r = remainder.low;
+    std::uint64_t k = 0;
+
+    for (std::uint64_t candidate = 1; candidate < e; ++candidate)
+    {
+        std::uint64_t temp = candidate * r + 1;
+
+        if (temp % e == 0)
+        {
+            k = candidate;
+            break;
+        }
+    }
+
+    if (k == 0)
+    {
+        return Hash128{0, 0};
+    }
+
+    Hash128 firstPart =
+        ChebyHash::ChebyHash128::multiply(
+            quotient,
+            Hash128{0, k}
+        );
+
+    std::uint64_t secondPart = (k * r + 1) / e;
+
+    Hash128 result =
+        ChebyHash::ChebyHash128::add(
+            firstPart,
+            Hash128{0, secondPart}
+        );
+
+    Hash128 check =
+        ChebyHash::ChebyHash128::multiplyMod(
+            valueMod,
+            result,
+            modulus
+        );
+
+    if (check.high != 0 || check.low != 1)
+    {
+        return Hash128{0, 0};
+    }
+
+    return result;
 }
 
 bool ChebySignature::Signature::isPrime(std::uint64_t value)
@@ -102,31 +149,53 @@ std::uint64_t ChebySignature::Signature::generatePrime()
 
 ChebySignature::KeyPair ChebySignature::Signature::generateKeyPair()
 {
-    std::uint64_t p = generatePrime();
-    std::uint64_t q = generatePrime();  
-
-    while (p == q)
+    while (true)
     {
-        q = generatePrime();
+        std::uint64_t p = generatePrime();
+        std::uint64_t q = generatePrime();  
+
+        while (p == q)
+        {
+            q = generatePrime();
+        }
+
+        Hash128 pHash{0, p};
+        Hash128 qHash{0, q};    
+
+        Hash128 modulus = ChebyHash::ChebyHash128::multiply(pHash, qHash);
+
+        Hash128 pMinusOne = ChebyHash::ChebyHash128::subtract(pHash, Hash128{0, 1});
+        Hash128 qMinusOne = ChebyHash::ChebyHash128::subtract(qHash, Hash128{0, 1});
+
+        Hash128 phi = ChebyHash::ChebyHash128::multiply(pMinusOne, qMinusOne);
+
+        Hash128 publicExponent{0, 65537};
+        Hash128 privateExponent = modularInverse(publicExponent, phi);
+
+        if (!ChebyHash::ChebyHash128::isZero(privateExponent))
+        {
+            return KeyPair{
+                PublicKey
+                {
+                    modulus,
+                    publicExponent
+                },
+                PrivateKey
+                {
+                    modulus,
+                    privateExponent
+                }
+            };
+        }
     }
-
-    Hash128 pHash{0, p};
-    Hash128 qHash{0, q};    
-
-    Hash128 modulus = ChebyHash::ChebyHash128::multiply(pHash, qHash);
-
-    Hash128 pMinusOne = ChebyHash::ChebyHash128::subtract(pHash, Hash128{0, 1});
-    Hash128 qMinusOne = ChebyHash::ChebyHash128::subtract(qHash, Hash128{0, 1});
-
-    Hash128 phi = ChebyHash::ChebyHash128::multiply(pMinusOne, qMinusOne);
 }
 
 ChebySignature::Hash128 ChebySignature::Signature::sign(Hash128 messageHash, const PrivateKey& privateKey)
 {
-    return modularPower(messageHash, Hash128{0, privateKey.privateExponent}, privateKey.modulus);
+    return modularPower(messageHash, privateKey.privateExponent, privateKey.modulus);
 }
 
 ChebySignature::Hash128 ChebySignature::Signature::verify(Hash128 signature, const PublicKey& publicKey)
 {
-    return modularPower(signature, Hash128{0, publicKey.publicExponent}, publicKey.modulus);
+    return modularPower(signature, publicKey.publicExponent, publicKey.modulus);
 }
