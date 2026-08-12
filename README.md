@@ -1,4 +1,4 @@
-### [EN](README.md), [RU](README_RU.md)
+### EN, [RU](README_ru.md)
 
 # ChebyCoin
 
