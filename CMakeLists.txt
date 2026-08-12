@@ -22,7 +22,7 @@ add_executable(ChebyCoin
     src/ChebySignature/ChebySignature.cpp
     src/ChebySignature/Testers/ChebySignatureTester.cpp 
     # Utils
-    src/Utils/RandomStringGenerator.cpp
+    src/Utils/RandomGenerators.cpp
     src/Utils/ScreenUtils.cpp
     # main.cpp
     src/main.cpp

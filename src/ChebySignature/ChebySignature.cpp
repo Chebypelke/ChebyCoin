@@ -1,4 +1,6 @@
 #include "ChebySignature.hpp"
+#include "../Utils/Utils.hpp"
+#include <cmath>
 
 ChebySignature::Hash128 ChebySignature::Signature::modularPower(Hash128 base, Hash128 exponent, Hash128 modulus)
 {
@@ -66,4 +68,34 @@ std::uint64_t ChebySignature::Signature::modularInverse(std::uint64_t value, std
     }
 
     return oldT;
+}
+
+bool ChebySignature::Signature::isPrime(std::uint64_t value)
+{
+    if (value < 2)
+    {
+        return false;
+    }
+
+    for (std::uint64_t divisor = 2; divisor <= std::sqrt(value); ++divisor)
+    {
+        if (value % divisor == 0)
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+std::uint64_t ChebySignature::Signature::generatePrime()
+{
+    std::uint64_t candidate = 0;
+
+    while (!isPrime(candidate))
+    {
+        candidate = std::stoull(RandomNumberGenerator(16));
+    }
+
+    return candidate;
 }

@@ -36,6 +36,9 @@ namespace ChebySignature
         static std::int64_t extendedGcd(std::int64_t first, std::int64_t second, std::int64_t& coefficientOne, std::int64_t& coefficientTwo);
 
         static std::uint64_t modularInverse(std::uint64_t value, std::uint64_t modulus);
+
+        static bool isPrime(std::uint64_t value);
+        static std::uint64_t generatePrime();
     public:
         static KeyPair generateKeyPair();
 
