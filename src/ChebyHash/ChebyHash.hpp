@@ -38,14 +38,30 @@ namespace ChebyHash
             std::uint64_t low;
         };
 
+        struct SignedHash128
+        {
+            Hash128 value;
+            bool negative;
+        };
+
+        struct DivisionResult
+        {
+            Hash128 quotient;
+            Hash128 remainder;
+        };
+
         static Hash128 add(const Hash128& valueOne, const Hash128& valueTwo);
         static Hash128 xorValues(const Hash128& valueOne, const Hash128& valueTwo);
         static Hash128 subtract(const Hash128& valueOne, const Hash128& valueTwo);
         static bool lessThan(const Hash128& valueOne, const Hash128& valueTwo);
         static bool isZero(const Hash128& value);
+        static SignedHash128 subtractSigned(
+            const Hash128& valueOne, const bool& valueOneNegative, const Hash128& valueTwo, const bool& valueTwoNegative
+        );
         static Hash128 multiply(const Hash128& valueOne, const Hash128& valueTwo);
         static Hash128 shiftLeft(const Hash128& value, unsigned int shift);
         static Hash128 shiftRight(const Hash128& value, unsigned int shift);
+        static DivisionResult divide(const Hash128& value, const Hash128& divisor);
         static Hash128 mod(const Hash128& value, const Hash128& divisor);
         static Hash128 rotl(const Hash128& value, unsigned int shift);
         static Hash128 rotr(const Hash128& value, unsigned int shift);
