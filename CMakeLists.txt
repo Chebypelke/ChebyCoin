@@ -16,7 +16,8 @@ add_executable(ChebyCoin
     src/ChebyChain/Blockchain.cpp
     src/ChebyChain/Testers/ChebyChainTester.cpp
     # ChebyCoinApp
-    src/ChebyCoinApp/MainMenu.cpp
+    src/ChebyCoinApp/Menus/MainMenu.cpp
+    src/ChebyCoinApp/Menus/WalletMenu.cpp
     src/ChebyCoinApp/App.cpp
     # ChebySignature
     src/ChebySignature/ChebySignature.cpp

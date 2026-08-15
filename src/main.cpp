@@ -1,5 +1,6 @@
-#include "ChebySignature/Testers/ChebySignatureTesters.hpp"
+#include "ChebyCoinApp/ChebyCoinApp.hpp"
 int main()
 {
-    ChebySignature::Testers::ChebySignatureTester();
+    ChebyCoinApp::App app;
+    app.run();
 }

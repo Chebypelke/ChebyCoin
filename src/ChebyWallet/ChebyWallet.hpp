@@ -2,6 +2,8 @@
 
 #include "../ChebyHash/ChebyHash.hpp"
 #include "../ChebySignature/ChebySignature.hpp"
+#include <optional>
+#include <string>
 
 namespace ChebyWallet 
 {
@@ -21,5 +23,8 @@ namespace ChebyWallet
         
         static Address generateAddress(const ChebySignature::PublicKey& publicKey);
         static WalletData generateWallet();
+
+        static bool saveWallet(const WalletData& wallet, const std::string& path);
+        static std::optional<WalletData> loadWallet(const std::string& path);
     };
 };
