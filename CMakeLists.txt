@@ -21,6 +21,9 @@ add_executable(ChebyCoin
     # ChebySignature
     src/ChebySignature/ChebySignature.cpp
     src/ChebySignature/Testers/ChebySignatureTester.cpp 
+    # ChebyWallet
+    src/ChebyWallet/ChebyWallet.cpp
+    src/ChebyWallet/Testers/ChebyWalletTester.cpp 
     # Utils
     src/Utils/RandomGenerators.cpp
     src/Utils/ScreenUtils.cpp
