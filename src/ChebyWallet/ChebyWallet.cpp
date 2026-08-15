@@ -1,4 +1,5 @@
 #include "ChebyWallet.hpp"
+#include "../Utils/Utils.hpp"
 #include <string>
 #include <fstream>
 #include <cstdint>
@@ -26,49 +27,7 @@ ChebyWallet::Wallet::WalletData ChebyWallet::Wallet::generateWallet()
     return WalletData{keyPair, address};
 }
 
-namespace
-{
-    constexpr std::uint32_t WALLET_MAGIC = 0x4348574C; // "CHWL"
-    constexpr std::uint32_t WALLET_VERSION = 1;
 
-    bool writeUint64(std::ofstream& file, std::uint64_t value)
-    {
-        file.write(reinterpret_cast<const char*>(&value), sizeof(value));
-
-        return static_cast<bool>(file);
-    }
-
-    bool readUint64(std::ifstream& file, std::uint64_t& value)
-    {
-        file.read(reinterpret_cast<char*>(&value), sizeof(value));
-
-        return static_cast<bool>(file);
-    }
-
-    bool writeHash128(std::ofstream& file, const ChebyHash::ChebyHash128::Hash128& value)
-    {
-        return writeUint64(file, value.high) && writeUint64(file, value.low);
-    }
-
-    bool readHash128(std::ifstream& file, ChebyHash::ChebyHash128::Hash128& value)
-    {
-        return readUint64(file, value.high) && readUint64(file, value.low);
-    }
-
-    bool writeUint32(std::ofstream& file, std::uint32_t value)
-    {
-        file.write(reinterpret_cast<const char*>(&value), sizeof(value));
-
-        return static_cast<bool>(file);
-    }
-
-    bool readUint32(std::ifstream& file, std::uint32_t& value)
-    {
-        file.read(reinterpret_cast<char*>(&value), sizeof(value));
-
-        return static_cast<bool>(file);
-    }
-}
 
 bool ChebyWallet::Wallet::saveWallet(const WalletData& wallet, const std::string& path)
 {
@@ -79,12 +38,12 @@ bool ChebyWallet::Wallet::saveWallet(const WalletData& wallet, const std::string
         return false;
     }
 
-    if (!writeUint32(file, WALLET_MAGIC))
+    if (!FileUtils::writeUint64(file, FileUtils::WALLET_MAGIC))
     {
         return false;
     }
 
-    if (!writeUint32(file, WALLET_VERSION))
+    if (!FileUtils::writeUint32(file, FileUtils::WALLET_VERSION))
     {
         return false;
     }
@@ -92,22 +51,22 @@ bool ChebyWallet::Wallet::saveWallet(const WalletData& wallet, const std::string
     const auto& publicKey = wallet.keyPair.publicKey;
     const auto& privateKey = wallet.keyPair.privateKey;
 
-    if (!writeHash128(file, publicKey.modulus))
+    if (!FileUtils::writeHash128(file, publicKey.modulus))
     {
         return false;
     }
 
-    if (!writeHash128(file, publicKey.publicExponent))
+    if (!FileUtils::writeHash128(file, publicKey.publicExponent))
     {
         return false;
     }
 
-    if (!writeHash128(file, privateKey.modulus))
+    if (!FileUtils::writeHash128(file, privateKey.modulus))
     {
         return false;
     }
 
-    if (!writeHash128(file, privateKey.privateExponent))
+    if (!FileUtils::writeHash128(file, privateKey.privateExponent))
     {
         return false;
     }
@@ -124,47 +83,47 @@ std::optional<ChebyWallet::Wallet::WalletData> ChebyWallet::Wallet::loadWallet(c
         return std::nullopt;
     }
 
-    std::uint32_t magic = 0;
+    std::uint64_t magic = 0;
     std::uint32_t version = 0;
 
-    if (!readUint32(file, magic))
+    if (!FileUtils::readUint64(file, magic))
     {
         return std::nullopt;
     }
 
-    if (!readUint32(file, version))
+    if (!FileUtils::readUint32(file, version))
     {
         return std::nullopt;
     }
 
-    if (magic != WALLET_MAGIC)
+    if (magic != FileUtils::WALLET_MAGIC)
     {
         return std::nullopt;
     }
 
-    if (version != WALLET_VERSION)
+    if (version != FileUtils::WALLET_VERSION)
     {
         return std::nullopt;
     }
 
     ChebySignature::KeyPair keyPair;
 
-    if (!readHash128(file, keyPair.publicKey.modulus))
+    if (!FileUtils::readHash128(file, keyPair.publicKey.modulus))
     {
         return std::nullopt;
     }
 
-    if (!readHash128(file, keyPair.publicKey.publicExponent))
+    if (!FileUtils::readHash128(file, keyPair.publicKey.publicExponent))
     {
         return std::nullopt;
     }
 
-    if (!readHash128(file, keyPair.privateKey.modulus))
+    if (!FileUtils::readHash128(file, keyPair.privateKey.modulus))
     {
         return std::nullopt;
     }
 
-    if (!readHash128(file, keyPair.privateKey.privateExponent))
+    if (!FileUtils::readHash128(file, keyPair.privateKey.privateExponent))
     {
         return std::nullopt;
     }

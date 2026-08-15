@@ -28,6 +28,7 @@ add_executable(ChebyCoin
     # Utils
     src/Utils/RandomGenerators.cpp
     src/Utils/ScreenUtils.cpp
+    src/Utils/FileUtils.cpp
     # main.cpp
     src/main.cpp
 )
