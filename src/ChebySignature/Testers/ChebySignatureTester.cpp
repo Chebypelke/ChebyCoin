@@ -1,18 +1,14 @@
 #include "../ChebySignature.hpp"
 #include "ChebySignatureTesters.hpp"
 #include "../../Utils/Utils.hpp"
-#include <cstddef>
 #include <iostream>
 #include <limits>
 #include <ostream>
-#include <string>
 #include <chrono>
 
 void ChebySignature::Testers::ChebySignatureTester()
 {
     int choice;
-    std::string data;
-    std::size_t blockIndex;
     bool run = true;
 
     while (run)
