@@ -35,11 +35,11 @@ void ChebyCoinApp::App::run()
                 {
                     clearScreen();
 
-                    std::cout << "[+] Generating wallet...";
+                    std::cerr << "[+] Generating wallet...";
 
                     wallet = ChebyWallet::Wallet::generateWallet();
 
-                    std::cout << " DONE!" << std::endl << std::endl;
+                    std::cerr << " DONE!" << std::endl << std::endl;
 
                     std::cout << "Wallet address: "
                               << std::hex
@@ -67,27 +67,34 @@ void ChebyCoinApp::App::run()
                 {
                     clearScreen();
                     
+                    std::cerr << "[*] Loading wallet...";
+
                     auto loadedWallet = ChebyWallet::Wallet::loadWallet("wallet.cbcwallet");
 
                     if (loadedWallet)
                     {
                         wallet = *loadedWallet;
 
-                        std::cout << "[+] Wallet loaded!" << std::endl;
+                        std::cerr << " DONE!" << std::endl;
                     }
                     else  
                     {
-                        std::cout << "[-] Failed to load wallet!" << std::endl;
+                        std::cerr << " FAILED!" << std::endl;
                     }
 
+                    std::cout << "To turn back press enter";
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cin.get();
+
+                    clearScreen();
                     break;
                 }
                 case ChebyCoinApp::WalletMenu::WalletMenuChoice::WalletInfo: 
                 {
                     clearScreen();
 
-                    std::cout << "[*] Reading wallet info...";
-                    std::cout << " DONE!" << std::endl;
+                    std::cerr << "[*] Reading wallet info...";
+                    std::cerr << " DONE!" << std::endl;
                     
                     std::cout << "Wallet address: "
                               << std::hex
@@ -113,7 +120,7 @@ void ChebyCoinApp::App::run()
                               << std::dec
                               << std::endl;    
 
-                    std::cout << "[*] Verifying keys...";
+                    std::cerr << "[*] Verifying keys...";
 
                     ChebySignature::Hash128 messageHash{
                         5643093659353030982ULL,     // FANFORIN
@@ -125,11 +132,11 @@ void ChebyCoinApp::App::run()
                     ChebySignature::Hash128 signature = ChebySignature::Signature::sign(messageHash, privateKey);
                     ChebySignature::Hash128 verified = ChebySignature::Signature::verify(signature, publicKey);
 
-                    std::cout << " DONE!" << std::endl;
-                    
                     auto expected = ChebyHash::ChebyHash128::mod(messageHash, publicKey.modulus);
 
                     bool valid = verified.high == expected.high && verified.low == expected.low;
+
+                    std::cerr << " DONE!" << std::endl;
 
                     std::cout << "Verified: "
                               << (valid ? "YES" : "NO")
@@ -143,7 +150,6 @@ void ChebyCoinApp::App::run()
 
                     break;
                 }
-
                 case ChebyCoinApp::WalletMenu::WalletMenuChoice::Balance: // Заглушка
                     clearScreen();
                     break;
@@ -157,17 +163,24 @@ void ChebyCoinApp::App::run()
                 {                    
                     clearScreen();
 
+                    std::cerr << "[*] Saving wallet...";
+
                     bool success = ChebyWallet::Wallet::saveWallet(*wallet, "wallet.cbcwallet");
 
                     if (success)
                     {
-                        std::cout << "[+] Wallet saved!" << std::endl;
+                        std::cout << " DONE!" << std::endl;
                     }
                     else
                     {
-                        std::cout << "[-] Failed to save wallet!" << std::endl;
+                        std::cout << " FAILED!" << std::endl;
                     }
 
+                    std::cout << "To turn back press enter";
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cin.get();
+
+                    clearScreen();
                     break;
                 }
                 case ChebyCoinApp::WalletMenu::WalletMenuChoice::Back:
