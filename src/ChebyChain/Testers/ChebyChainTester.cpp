@@ -23,6 +23,8 @@ void ChebyChain::Testers::ChebyChainTester()
         std::cout << "2. Blocks count" << std::endl;
         std::cout << "3. Block by index" << std::endl;
         std::cout << "4. Validate blockchain" << std::endl;
+        std::cout << "5. Save blockchain" << std::endl;
+        std::cout << "6. Load blockchain" << std::endl;
         std::cout << "0. Exit" << std::endl;
 
         std::cout << "Your choice: "; 
@@ -85,6 +87,28 @@ void ChebyChain::Testers::ChebyChainTester()
             }
             
             std::cout << "Blockchain is valid!" << std::endl;
+            break;
+        case 5:
+            clearScreen();
+
+            if (!blockchain.saveBlockchain("blockchain.cbcchain"))
+            {
+                std::cout << "Blockchain not saved!" << std::endl;
+                break;
+            }
+            
+            std::cout << "Blockchain saved!" << std::endl;
+            break;
+        case 6:
+            clearScreen();
+
+            if (!blockchain.loadBlockchain("blockchain.cbcchain"))
+            {
+                std::cout << "Blockchain not loaded!" << std::endl;
+                break;
+            }
+
+            std::cout << "Blockchain loaded" << std::endl;
             break;
         case 0:
             run = false;

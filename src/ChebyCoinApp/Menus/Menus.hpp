@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../ChebyWallet/ChebyWallet.hpp"
+#include "../../ChebyChain/ChebyChain.hpp"
 #include <optional>
 
 namespace ChebyCoinApp 
@@ -39,5 +40,24 @@ namespace ChebyCoinApp
         explicit WalletMenu(std::optional<ChebyWallet::Wallet::WalletData>& wallet);
 
         WalletMenuChoice walletMenu();
+    };
+
+    class BlockchainMenu
+    {
+    private:
+        std::optional<ChebyChain::Blockchain>& blockchain;
+    public:
+        enum class BlockchainMenuChoice
+        {
+            LoadBlockchain = 1,
+            BlockchainInfo = 2,
+            ValidateBlockchain = 3,
+            ShowBlock = 4,
+            Back = 0
+        };
+        
+        explicit BlockchainMenu(std::optional<ChebyChain::Blockchain>& blockchain);
+
+        BlockchainMenuChoice blockchainMenu();
     };
 };

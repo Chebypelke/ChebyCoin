@@ -41,3 +41,28 @@ bool FileUtils::readHash128(std::ifstream& file, ChebyHash::ChebyHash128::Hash12
     return readUint64(file, value.high) && readUint64(file, value.low);
 }
 
+bool FileUtils::writeString(std::ofstream& file, const std::string& value)
+{
+    const std::uint64_t size = value.size();
+
+    if (!writeUint64(file, size))
+        return false;
+
+    file.write(value.data(), static_cast<std::streamsize>(size));
+
+    return static_cast<bool>(file);
+}
+
+bool FileUtils::readString(std::ifstream& file, std::string& value)
+{
+    std::uint64_t size;
+
+    if (!readUint64(file, size))
+        return false;
+
+    value.resize(size);
+
+    file.read(value.data(), static_cast<std::streamsize>(size));
+
+    return static_cast<bool>(file);
+}

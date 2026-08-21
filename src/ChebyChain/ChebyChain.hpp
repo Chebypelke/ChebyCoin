@@ -28,6 +28,8 @@ namespace ChebyChain {
         std::uint64_t getBlockIndex() const;
         std::uint64_t getBlockHash() const;
         std::uint64_t getBlockPreviousHash() const;
+        std::uint64_t getBlockTimestamp() const;
+        const std::string& getBlockData() const;
     };
 
     class Blockchain
@@ -43,5 +45,8 @@ namespace ChebyChain {
         std::size_t getBlockCount() const;
         const Block& getBlock(std::size_t index) const;
         bool isValid() const;
+
+        bool saveBlockchain(const std::string& path) const;
+        bool loadBlockchain(const std::string& path);
     };
 }

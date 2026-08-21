@@ -23,3 +23,5 @@ ChebyChain::Block::Block(std::uint64_t blockIndex, std::uint64_t blockTimestamp,
 std::uint64_t ChebyChain::Block::getBlockIndex() const { return index; }
 std::uint64_t ChebyChain::Block::getBlockHash() const { return hash; }
 std::uint64_t ChebyChain::Block::getBlockPreviousHash() const { return previousHash; }
+std::uint64_t ChebyChain::Block::getBlockTimestamp() const { return timestamp; }
+const std::string& ChebyChain::Block::getBlockData() const { return data; }

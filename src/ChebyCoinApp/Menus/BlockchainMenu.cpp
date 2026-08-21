@@ -3,11 +3,11 @@
 #include <iostream>
 #include <limits>
 
-ChebyCoinApp::WalletMenu::WalletMenu(std::optional<ChebyWallet::Wallet::WalletData> &wallet) : wallet(wallet)
+ChebyCoinApp::BlockchainMenu::BlockchainMenu(std::optional<ChebyChain::Blockchain>& blockchain) : blockchain(blockchain)
 {
 }
 
-ChebyCoinApp::WalletMenu::WalletMenuChoice ChebyCoinApp::WalletMenu::walletMenu()
+ChebyCoinApp::BlockchainMenu::BlockchainMenuChoice ChebyCoinApp::BlockchainMenu::blockchainMenu()
 {
     int choice = 0;
 
@@ -15,13 +15,11 @@ ChebyCoinApp::WalletMenu::WalletMenuChoice ChebyCoinApp::WalletMenu::walletMenu(
     {
         std::cout << "===== ChebyCoin App - Wallet =====" << std::endl;
 
-        if (wallet)
+        if (blockchain)
         {
-            std::cout << "1. Wallet Info" << std::endl;
-            std::cout << "2. Balance" << std::endl;
-            std::cout << "3. Send Coins" << std::endl;
-            std::cout << "4. Transactions" << std::endl;
-            std::cout << "5. Save Wallet" << std::endl;
+            std::cout << "1. Blockchain Info" << std::endl;
+            std::cout << "2. Validate Blockchain" << std::endl;
+            std::cout << "3. Show Block" << std::endl;
             std::cout << "0. Back" << std::endl;
 
             std::cout << "Your choice: " << std::endl;
@@ -39,24 +37,16 @@ ChebyCoinApp::WalletMenu::WalletMenuChoice ChebyCoinApp::WalletMenu::walletMenu(
             {
             case 1:
                 clearScreen();
-                return WalletMenuChoice::WalletInfo;
+                return BlockchainMenuChoice::BlockchainInfo;
             case 2:
                 clearScreen();
-                return WalletMenuChoice::Balance;
+                return BlockchainMenuChoice::ValidateBlockchain;
             case 3:
-            {
                 clearScreen();
-                return WalletMenuChoice::SendCoins;
-            }
-            case 4:
-                clearScreen();
-                return WalletMenuChoice::Transactions;
-            case 5:
-                clearScreen();
-                return WalletMenuChoice::SaveWallet;
+                return BlockchainMenuChoice::ShowBlock;
             case 0:
                 clearScreen();
-                return WalletMenuChoice::Back;
+                return BlockchainMenuChoice::Back;
             default:
                 clearScreen();
                 std::cout << "ERROR: Invalid choice" << std::endl;
@@ -64,8 +54,7 @@ ChebyCoinApp::WalletMenu::WalletMenuChoice ChebyCoinApp::WalletMenu::walletMenu(
             }
         }
 
-        std::cout << "1. Create Wallet" << std::endl;
-        std::cout << "2. Load Wallet" << std::endl;
+        std::cout << "1. Load Blockchain" << std::endl;
         std::cout << "0. Back" << std::endl;
 
         std::cout << "Your choice: " << std::endl;
@@ -83,13 +72,10 @@ ChebyCoinApp::WalletMenu::WalletMenuChoice ChebyCoinApp::WalletMenu::walletMenu(
         {
         case 1:
             clearScreen();
-            return WalletMenuChoice::CreateWallet;
-        case 2:
-            clearScreen();
-            return WalletMenuChoice::LoadWallet;
+            return BlockchainMenuChoice::LoadBlockchain;
         case 0:
             clearScreen();
-            return WalletMenuChoice::Back;
+            return BlockchainMenuChoice::Back;
         default:
             clearScreen();
             std::cout << "ERROR: Invalid choice" << std::endl;
