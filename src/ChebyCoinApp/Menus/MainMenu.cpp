@@ -1,7 +1,6 @@
 #include "Menus.hpp"
 #include "../../Utils/Utils.hpp"
 #include <iostream>
-#include <limits>
 
 ChebyCoinApp::MainMenu::MainMenuChoice ChebyCoinApp::MainMenu::mainMenu()
 {
@@ -20,31 +19,29 @@ ChebyCoinApp::MainMenu::MainMenuChoice ChebyCoinApp::MainMenu::mainMenu()
         std::cout << "Your choice: " << std::endl; 
         std::cout << "> ";
 
-        if (!(std::cin >> choice)) {
+        if (!CLIUtils::readInt(choice)) {
 		    std::cout << "ERROR: type number!" << std::endl; 
-		    std::cin.clear();
-		    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 		    continue;
 	    }
 
         switch (choice) {
         case 1:
-            clearScreen();
+            CLIUtils::clearScreen();
             return MainMenuChoice::Wallet;
         case 2: 
-            clearScreen();
+            CLIUtils::clearScreen();
             return MainMenuChoice::Transactions;
         case 3:
-        {
-            clearScreen();
+            CLIUtils::clearScreen();
             return MainMenuChoice::Blockchain;
-        }
         case 4:
-            clearScreen();
+            CLIUtils::clearScreen();
             return MainMenuChoice::Mining;
-        case 0: return MainMenuChoice::Exit;
+        case 0: 
+            CLIUtils::clearScreen();
+            return MainMenuChoice::Exit;
         default: 
-            clearScreen();
+            CLIUtils::clearScreen();
             std::cout << "ERROR: Invalid choice" << std::endl;
             break;
         }

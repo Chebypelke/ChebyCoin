@@ -19,7 +19,7 @@ void ChebyCoinApp::App::runWalletMenu()
         {
         case ChebyCoinApp::WalletMenu::WalletMenuChoice::CreateWallet:
         {
-            clearScreen();
+            CLIUtils::clearScreen();
 
             std::cerr << "[+] Generating wallet...";
 
@@ -38,12 +38,12 @@ void ChebyCoinApp::App::runWalletMenu()
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cin.get();
 
-            clearScreen();
+            CLIUtils::clearScreen();
             break;
         }
         case ChebyCoinApp::WalletMenu::WalletMenuChoice::LoadWallet:
         {
-            clearScreen();
+            CLIUtils::clearScreen();
 
             std::cerr << "[*] Loading wallet...";
 
@@ -64,12 +64,12 @@ void ChebyCoinApp::App::runWalletMenu()
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cin.get();
 
-            clearScreen();
+            CLIUtils::clearScreen();
             break;
         }
         case ChebyCoinApp::WalletMenu::WalletMenuChoice::WalletInfo:
         {
-            clearScreen();
+            CLIUtils::clearScreen();
 
             std::cerr << "[*] Reading wallet info...";
             std::cerr << " DONE!" << std::endl;
@@ -112,22 +112,22 @@ void ChebyCoinApp::App::runWalletMenu()
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cin.get();
 
-            clearScreen();
+            CLIUtils::clearScreen();
 
             break;
         }
         case ChebyCoinApp::WalletMenu::WalletMenuChoice::Balance: // Заглушка
-            clearScreen();
+            CLIUtils::clearScreen();
             break;
         case ChebyCoinApp::WalletMenu::WalletMenuChoice::SendCoins: // Заглушка
-            clearScreen();
+            CLIUtils::clearScreen();
             break;
         case ChebyCoinApp::WalletMenu::WalletMenuChoice::Transactions: // Заглушка
-            clearScreen();
+            CLIUtils::clearScreen();
             break;
         case ChebyCoinApp::WalletMenu::WalletMenuChoice::SaveWallet:
         {
-            clearScreen();
+            CLIUtils::clearScreen();
 
             std::cerr << "[*] Saving wallet...";
 
@@ -146,12 +146,12 @@ void ChebyCoinApp::App::runWalletMenu()
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cin.get();
 
-            clearScreen();
+            CLIUtils::clearScreen();
             break;
         }
         case ChebyCoinApp::WalletMenu::WalletMenuChoice::Back:
+            CLIUtils::clearScreen();
             inWalletMenu = false;
-            clearScreen();
             break;
         }
     }
@@ -171,7 +171,7 @@ void ChebyCoinApp::App::runBlockchainMenu()
         {
         case ChebyCoinApp::BlockchainMenu::BlockchainMenuChoice::LoadBlockchain:
         {
-            clearScreen();
+            CLIUtils::clearScreen();
 
             std::cerr << "[+] Loading blockchain...";
 
@@ -190,12 +190,12 @@ void ChebyCoinApp::App::runBlockchainMenu()
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cin.get();
 
-            clearScreen();
+            CLIUtils::clearScreen();
             break;
         }
         case ChebyCoinApp::BlockchainMenu::BlockchainMenuChoice::BlockchainInfo:
         {
-            clearScreen();
+            CLIUtils::clearScreen();
 
             std::cerr << "[*] Reading blockchain info...";
             std::cerr << " DONE!" 
@@ -208,12 +208,12 @@ void ChebyCoinApp::App::runBlockchainMenu()
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cin.get();
 
-            clearScreen();
+            CLIUtils::clearScreen();
             break;
         }
         case ChebyCoinApp::BlockchainMenu::BlockchainMenuChoice::ValidateBlockchain:
         {
-            clearScreen();
+            CLIUtils::clearScreen();
 
             std::cerr << "[*] Validating blockchain...";
 
@@ -230,21 +230,19 @@ void ChebyCoinApp::App::runBlockchainMenu()
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cin.get();
 
-            clearScreen();
+            CLIUtils::clearScreen();
             break;
         }
         case ChebyCoinApp::BlockchainMenu::BlockchainMenuChoice::ShowBlock:
         {
-            clearScreen();
+            CLIUtils::clearScreen();
 
             size_t blockNumber = 0;
 
             std::cout << "Enter block number: ";
 
-            if (!(std::cin >> blockNumber)) {
-		        std::cout << "ERROR: type number!" << std::endl; 
-		        std::cin.clear();
-		        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            if (!CLIUtils::readSizeT(blockNumber)) {
+		        std::cout << "ERROR: type a non-negative number!" << std::endl; 
 		        continue;
 	        }
 
@@ -259,7 +257,7 @@ void ChebyCoinApp::App::runBlockchainMenu()
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 std::cin.get();
 
-                clearScreen();
+                CLIUtils::clearScreen();
                 break;
             }
 
@@ -271,7 +269,7 @@ void ChebyCoinApp::App::runBlockchainMenu()
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 std::cin.get();
 
-                clearScreen();
+                CLIUtils::clearScreen();
                 break;
             }
 
@@ -294,13 +292,13 @@ void ChebyCoinApp::App::runBlockchainMenu()
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cin.get();
 
-            clearScreen();
+            CLIUtils::clearScreen();
 
             break; 
         }
         case ChebyCoinApp::BlockchainMenu::BlockchainMenuChoice::Back:
+            CLIUtils::clearScreen();
             inBlockchainMenu = false;
-            clearScreen();
             break;
         }
     }
@@ -308,7 +306,7 @@ void ChebyCoinApp::App::runBlockchainMenu()
 
 void ChebyCoinApp::App::run()
 {
-    clearScreen();
+    CLIUtils::clearScreen();
 
     bool run = true;
 
@@ -320,28 +318,28 @@ void ChebyCoinApp::App::run()
         {
         case ChebyCoinApp::MainMenu::MainMenuChoice::Wallet: 
         {
-            clearScreen();
+            CLIUtils::clearScreen();
 
             runWalletMenu();
 
             break;
         }
         case ChebyCoinApp::MainMenu::MainMenuChoice::Transactions: // Заглушка 
-            clearScreen();
+            CLIUtils::clearScreen();
             break; 
         case ChebyCoinApp::MainMenu::MainMenuChoice::Blockchain: 
         {
-            clearScreen();
+            CLIUtils::clearScreen();
 
             runBlockchainMenu();
 
             break; 
         }
         case ChebyCoinApp::MainMenu::MainMenuChoice::Mining: // Заглушка
-            clearScreen();
+            CLIUtils::clearScreen();
             break; 
         case ChebyCoinApp::MainMenu::MainMenuChoice::Exit: // Заглушка
-            clearScreen();
+            CLIUtils::clearScreen();
             run = false;
             break;
         }

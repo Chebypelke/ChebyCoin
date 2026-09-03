@@ -3,7 +3,6 @@
 #include "../../Utils/Utils.hpp"
 #include <cstddef>
 #include <iostream>
-#include <limits>
 #include <ostream>
 #include <string>
 
@@ -28,49 +27,51 @@ void ChebyChain::Testers::ChebyChainTester()
         std::cout << "0. Exit" << std::endl;
 
         std::cout << "Your choice: "; 
-        if (!(std::cin >> choice)) {
-		    std::cout << "ERROR: type number!" << std::endl; 
-		    std::cin.clear();
-		    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-		    continue;
-	    }
+        if (!CLIUtils::readInt(choice))
+        {
+            std::cout << "ERROR: type number!" << std::endl; 
+            continue;
+        }
 
         switch (choice) {
         case 1:
-            clearScreen();
+            CLIUtils::clearScreen();
             std::cout << "Type block data: ";
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-            if (!(std::getline(std::cin, data)))
+            if(!CLIUtils::readString(data))
             {
-                std::cin.clear();
-		        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-		        continue;
+                break;
             }
 
             blockchain.addBlock(data);
             break;
         case 2: 
-            clearScreen();
-            std::cout << "Blocks count: " << blockchain.getBlockCount() << std::endl;
+            CLIUtils::clearScreen();
+
+            std::cout << "Blocks count: " << blockchain.getBlockCount() 
+                                          << std::endl;
+            
             break; 
         case 3:
         {
-            clearScreen();
+            CLIUtils::clearScreen();
+
             std::cout << "Enter block index: ";
             
-            if (!(std::cin >> blockIndex)) {
-		        std::cout << "ERROR: type number!" << std::endl; 
-		        std::cin.clear();
-		        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-		        continue;
-	        }
+            if (!CLIUtils::readSizeT(blockIndex))
+            {
+                std::cout << "ERROR: type a non-negative number!" << std::endl; 
+                break;
+            }
             
             const Block& block = blockchain.getBlock(blockIndex);
-            std::cout << "Block index: " << block.getBlockIndex() << std::endl;
+            std::cout << "Block index: " << block.getBlockIndex() 
+                                         << std::endl;
+
             std::cout << "Block hash: " << block.getBlockHash()
                                         << " (" << std::hex << block.getBlockHash() << ")" << std::dec
                                         << std::endl;
+
             std::cout << "Block previous hash: " << block.getBlockPreviousHash() 
                                                  << " (" << std::hex << block.getBlockPreviousHash() << ")" << std::dec
                                                  << std::endl;;
@@ -78,7 +79,7 @@ void ChebyChain::Testers::ChebyChainTester()
             break; 
         }
         case 4:
-            clearScreen();
+            CLIUtils::clearScreen();
 
             if (!blockchain.isValid())
             {
@@ -89,7 +90,7 @@ void ChebyChain::Testers::ChebyChainTester()
             std::cout << "Blockchain is valid!" << std::endl;
             break;
         case 5:
-            clearScreen();
+            CLIUtils::clearScreen();
 
             if (!blockchain.saveBlockchain("blockchain.cbcchain"))
             {
@@ -100,7 +101,7 @@ void ChebyChain::Testers::ChebyChainTester()
             std::cout << "Blockchain saved!" << std::endl;
             break;
         case 6:
-            clearScreen();
+            CLIUtils::clearScreen();
 
             if (!blockchain.loadBlockchain("blockchain.cbcchain"))
             {

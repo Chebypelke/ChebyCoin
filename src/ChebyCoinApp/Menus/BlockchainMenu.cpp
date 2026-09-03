@@ -1,7 +1,6 @@
 #include "Menus.hpp"
 #include "../../Utils/Utils.hpp"
 #include <iostream>
-#include <limits>
 
 ChebyCoinApp::BlockchainMenu::BlockchainMenu(std::optional<ChebyChain::Blockchain>& blockchain) : blockchain(blockchain)
 {
@@ -25,30 +24,28 @@ ChebyCoinApp::BlockchainMenu::BlockchainMenuChoice ChebyCoinApp::BlockchainMenu:
             std::cout << "Your choice: " << std::endl;
             std::cout << "> ";
 
-            if (!(std::cin >> choice))
+            if (!CLIUtils::readInt(choice))
             {
                 std::cout << "ERROR: type number!" << std::endl;
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 continue;
             }
 
             switch (choice)
             {
             case 1:
-                clearScreen();
+                CLIUtils::clearScreen();
                 return BlockchainMenuChoice::BlockchainInfo;
             case 2:
-                clearScreen();
+                CLIUtils::clearScreen();
                 return BlockchainMenuChoice::ValidateBlockchain;
             case 3:
-                clearScreen();
+                CLIUtils::clearScreen();
                 return BlockchainMenuChoice::ShowBlock;
             case 0:
-                clearScreen();
+                CLIUtils::clearScreen();
                 return BlockchainMenuChoice::Back;
             default:
-                clearScreen();
+                CLIUtils::clearScreen();
                 std::cout << "ERROR: Invalid choice" << std::endl;
                 break;
             }
@@ -60,24 +57,22 @@ ChebyCoinApp::BlockchainMenu::BlockchainMenuChoice ChebyCoinApp::BlockchainMenu:
         std::cout << "Your choice: " << std::endl;
         std::cout << "> ";
 
-        if (!(std::cin >> choice))
+        if (!CLIUtils::readInt(choice))
         {
             std::cout << "ERROR: type number!" << std::endl;
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             continue;
         }
 
         switch (choice)
         {
         case 1:
-            clearScreen();
+            CLIUtils::clearScreen();
             return BlockchainMenuChoice::LoadBlockchain;
         case 0:
-            clearScreen();
+            CLIUtils::clearScreen();
             return BlockchainMenuChoice::Back;
         default:
-            clearScreen();
+            CLIUtils::clearScreen();
             std::cout << "ERROR: Invalid choice" << std::endl;
             break;
         }

@@ -8,7 +8,7 @@
 
 void ChebyWallet::Testers::ChebyWalletTester()
 {
-    clearScreen();
+    CLIUtils::clearScreen();
 
     int choice;
     bool run = true;
@@ -33,7 +33,7 @@ void ChebyWallet::Testers::ChebyWalletTester()
         switch (choice) {
         case 1: // Create Wallet
         {
-            clearScreen();
+            CLIUtils::clearScreen();
 
             auto start = std::chrono::high_resolution_clock::now();
 
@@ -80,7 +80,7 @@ void ChebyWallet::Testers::ChebyWalletTester()
         }
         case 2: // Test address determinism
         {
-            clearScreen();
+            CLIUtils::clearScreen();
 
             auto start = std::chrono::high_resolution_clock::now();
 
@@ -158,7 +158,7 @@ void ChebyWallet::Testers::ChebyWalletTester()
         }
         case 3: // Test unique addresses
         {
-            clearScreen();
+            CLIUtils::clearScreen();
 
             auto start = std::chrono::high_resolution_clock::now();
 

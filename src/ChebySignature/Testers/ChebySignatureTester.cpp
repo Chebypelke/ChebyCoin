@@ -30,7 +30,7 @@ void ChebySignature::Testers::ChebySignatureTester()
         switch (choice) {
         case 1:
         {
-            clearScreen();
+            CLIUtils::clearScreen();
 
             auto start = std::chrono::high_resolution_clock::now();
 

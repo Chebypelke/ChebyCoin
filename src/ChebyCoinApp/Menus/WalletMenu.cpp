@@ -27,38 +27,34 @@ ChebyCoinApp::WalletMenu::WalletMenuChoice ChebyCoinApp::WalletMenu::walletMenu(
             std::cout << "Your choice: " << std::endl;
             std::cout << "> ";
 
-            if (!(std::cin >> choice))
+            if (!CLIUtils::readInt(choice))
             {
                 std::cout << "ERROR: type number!" << std::endl;
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 continue;
             }
 
             switch (choice)
             {
             case 1:
-                clearScreen();
+                CLIUtils::clearScreen();
                 return WalletMenuChoice::WalletInfo;
             case 2:
-                clearScreen();
+                CLIUtils::clearScreen();
                 return WalletMenuChoice::Balance;
             case 3:
-            {
-                clearScreen();
+                CLIUtils::clearScreen();
                 return WalletMenuChoice::SendCoins;
-            }
             case 4:
-                clearScreen();
+                CLIUtils::clearScreen();
                 return WalletMenuChoice::Transactions;
             case 5:
-                clearScreen();
+                CLIUtils::clearScreen();
                 return WalletMenuChoice::SaveWallet;
             case 0:
-                clearScreen();
+                CLIUtils::clearScreen();
                 return WalletMenuChoice::Back;
             default:
-                clearScreen();
+                CLIUtils::clearScreen();
                 std::cout << "ERROR: Invalid choice" << std::endl;
                 break;
             }
@@ -71,7 +67,7 @@ ChebyCoinApp::WalletMenu::WalletMenuChoice ChebyCoinApp::WalletMenu::walletMenu(
         std::cout << "Your choice: " << std::endl;
         std::cout << "> ";
 
-        if (!(std::cin >> choice))
+        if (!CLIUtils::readInt(choice))
         {
             std::cout << "ERROR: type number!" << std::endl;
             std::cin.clear();
@@ -82,16 +78,16 @@ ChebyCoinApp::WalletMenu::WalletMenuChoice ChebyCoinApp::WalletMenu::walletMenu(
         switch (choice)
         {
         case 1:
-            clearScreen();
+            CLIUtils::clearScreen();
             return WalletMenuChoice::CreateWallet;
         case 2:
-            clearScreen();
+            CLIUtils::clearScreen();
             return WalletMenuChoice::LoadWallet;
         case 0:
-            clearScreen();
+            CLIUtils::clearScreen();
             return WalletMenuChoice::Back;
         default:
-            clearScreen();
+            CLIUtils::clearScreen();
             std::cout << "ERROR: Invalid choice" << std::endl;
             break;
         }

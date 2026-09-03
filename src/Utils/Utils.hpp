@@ -3,7 +3,16 @@
 
 std::string RandomStringGenerator(size_t length);
 std::string RandomNumberGenerator(size_t length);
-void clearScreen();
+
+namespace CLIUtils 
+{
+    void clearScreen();
+
+    bool readInt(int& int_data);
+    bool readSizeT(std::size_t& size_t_data);
+    bool readString(std::string& string_data);
+    bool readUInt32(std::uint32_t& uint32_t_data);
+}
 
 namespace FileUtils {
     constexpr std::uint64_t WALLET_MAGIC = 0x43484357414C4C45;      // "CHCWALLE"
