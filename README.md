@@ -6,6 +6,8 @@ An experimental cryptocurrency and blockchain project written in C++.
 
 The project is developed for educational purposes and focuses on learning C++, hashing algorithms, 128-bit arithmetic, digital signatures, blockchain architecture, and secure programming concepts.
 
+The project uses components developed as part of its development, including ChebyHash, ChebySignature, and others.
+
 ## Features
 
 - ChebyHash32|64|128
@@ -64,7 +66,7 @@ The test changes a single input bit and measures how many output bits change.
 | ------------ | --------- | -------------------- |
 | ChebyHash32  | 32 bits   | ~16                  |
 | ChebyHash64  | 64 bits   | ~32                  |
-| ChebyHash128 | 128 bits  | ~63.9                |
+| ChebyHash128 | 128 bits  | 63.979               |
 
 With an ideal avalanche effect, changing one input bit should change approximately half of the output bits.
 
@@ -153,20 +155,24 @@ Testers provide a way to experiment with implemented ChebyCoin components.
 - RSA-style key generation
 - Message hash signing
 - Signature verification
-- Original hash comparison
+- Original and recovered hash comparison
 - PASS/FAIL verification output
 
 ## Build
 
 1. Clone the repository:
 
+```bash
 git clone git@github.com:Chebypelke/ChebyCoin.git
 cd ChebyCoin
+```
 
 2. Build the project using CMake:
 
+```bash
 cmake -S . -B build
 cmake --build build
+```
 
 ## Project Status
 
@@ -195,13 +201,13 @@ Current version: v0.0.4
 - [x] Digital signature generation
 - [x] Digital signature verification
 - [x] First ChebySignature release
+- [x] Wallets
 
 ### Planned
 
 - [ ] Transactions
 - [ ] Mining
 - [ ] Proof-of-Work
-- [ ] Wallets
 - [ ] Network layer
 - [ ] Transaction signing
 - [ ] Secure key storage
