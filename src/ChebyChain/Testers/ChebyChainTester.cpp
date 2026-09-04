@@ -48,8 +48,7 @@ void ChebyChain::Testers::ChebyChainTester()
         case 2: 
             CLIUtils::clearScreen();
 
-            std::cout << "Blocks count: " << blockchain.getBlockCount() 
-                                          << std::endl;
+            std::cout << "Blocks count: " << blockchain.getBlockCount() << std::endl;
             
             break; 
         case 3:

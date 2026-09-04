@@ -11,11 +11,10 @@ void ChebyHash::Testers::ChebyHash32Tester()
     bool run = true;
     int choice = 0;
 
-    
     uint64_t last_hash = 0;
-    auto total = std::uint64_t{0};
 
-    std::uint32_t TEST_COUNT = 10'000'00;
+    std::uint32_t TEST_COUNT = 0;
+    constexpr std::uint32_t DETERMINISM_TEST_COUNT = 10'000;
     constexpr std::size_t INPUT_LENGTH = 16;
 
     while (run)
@@ -48,6 +47,8 @@ void ChebyHash::Testers::ChebyHash32Tester()
             auto start = std::chrono::high_resolution_clock::now();
             auto attempt_start = std::chrono::high_resolution_clock::now();
             std::uint32_t progressStep = std::max<std::uint32_t>(1, TEST_COUNT / 10);
+
+            auto total = std::uint64_t{0};
 
             for (std::uint32_t y = 0; y < TEST_COUNT; ++y)
             {
@@ -101,8 +102,55 @@ void ChebyHash::Testers::ChebyHash32Tester()
         {
             CLIUtils::clearScreen();
 
-            
+            auto start = std::chrono::high_resolution_clock::now();
+            auto attempt_start = std::chrono::high_resolution_clock::now();
+            std::uint32_t progressStep = std::max<std::uint32_t>(1, DETERMINISM_TEST_COUNT / 10);
 
+            auto inputA = RandomStringGenerator(INPUT_LENGTH);
+            auto inputB = inputA;
+
+            auto total = std::uint64_t{0};
+
+            for (std::uint32_t y = 0; y < DETERMINISM_TEST_COUNT; ++y)
+            {
+                if ((y + 1) % progressStep == 0)
+                {
+                    inputA = RandomStringGenerator(INPUT_LENGTH);
+                    inputB = inputA;
+
+                    auto attempt_end = std::chrono::high_resolution_clock::now();
+                    
+                    auto attempt_duration = std::chrono::duration<double>(attempt_end - attempt_start);
+
+                    std::cout << "Attempt: " << y + 1 << "," 
+                              << " duration: " << attempt_duration.count() << "s." << std::endl;
+
+                    attempt_start = attempt_end;
+                }
+                
+                auto hashA = ChebyHash::ChebyHash32::hash(inputA);
+                auto hashB = ChebyHash::ChebyHash32::hash(inputB);
+
+                auto diff = std::__popcount(hashA ^ hashB);
+
+                total += diff;
+            } 
+
+            auto end = std::chrono::high_resolution_clock::now();
+                        
+            auto duration = std::chrono::duration<double>(end - start);
+
+            if (total != 0)
+            {
+                std::cout << "Test: FAIL" << std::endl 
+                          << "Duration: " << duration.count() << "s." << std::endl;
+                
+                break;
+            }
+
+            std::cout << "Test: PASS" << std::endl 
+                      << "Duration: " << duration.count() << "s." << std::endl;
+            
             break; 
         }
         case 0:
