@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../Transactions/Transactions.hpp"
+
 #include <cstdint>
 #include <string>
 #include <vector>
@@ -11,6 +13,7 @@ namespace ChebyChain {
         std::uint64_t index;
         std::uint64_t timestamp;
         std::string data;
+        std::optional<Transaction> transaction;
 
         std::uint64_t previousHash;
         std::uint64_t hash;
@@ -20,6 +23,13 @@ namespace ChebyChain {
             std::uint64_t index,
             std::uint64_t timestamp,
             std::string data,
+            std::uint64_t previousHash
+        );
+
+        Block(
+            std::uint64_t index,
+            std::uint64_t timestamp,
+            const Transaction& transaction,
             std::uint64_t previousHash
         );
 
@@ -42,6 +52,8 @@ namespace ChebyChain {
         Blockchain();
 
         void addBlock(const std::string& data);
+        void addBlock(const Transaction& transaction);
+
         std::size_t getBlockCount() const;
         const Block& getBlock(std::size_t index) const;
         bool isValid() const;

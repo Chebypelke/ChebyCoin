@@ -20,6 +20,14 @@ ChebyChain::Block::Block(std::uint64_t blockIndex, std::uint64_t blockTimestamp,
     hash = calculateHash();
 }
 
+ChebyChain::Block::Block(std::uint64_t blockIndex, std::uint64_t blockTimestamp, const Transaction& blockTransaction, 
+    std::uint64_t blockPreviousHash)
+    : index(blockIndex), timestamp(blockTimestamp), transaction(blockTransaction),
+    previousHash(blockPreviousHash)
+{
+    hash = calculateHash();
+}
+
 std::uint64_t ChebyChain::Block::getBlockIndex() const { return index; }
 std::uint64_t ChebyChain::Block::getBlockHash() const { return hash; }
 std::uint64_t ChebyChain::Block::getBlockPreviousHash() const { return previousHash; }

@@ -27,8 +27,6 @@ ChebyWallet::Wallet::WalletData ChebyWallet::Wallet::generateWallet()
     return WalletData{keyPair, address};
 }
 
-
-
 bool ChebyWallet::Wallet::saveWallet(const WalletData& wallet, const std::string& path)
 {
     std::ofstream file(path, std::ios::binary | std::ios::trunc);

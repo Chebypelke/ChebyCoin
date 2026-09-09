@@ -30,6 +30,16 @@ void ChebyChain::Blockchain::addBlock(const std::string& data)
     );
 }
 
+void ChebyChain::Blockchain::addBlock(const Transaction& transaction)
+{
+    chain.emplace_back(
+    chain.back().getBlockIndex() + 1,
+    getCurrentTimestamp(),
+    transaction,
+    chain.back().getBlockHash()
+    );
+}
+
 std::size_t ChebyChain::Blockchain::getBlockCount() const { return chain.size(); }
 
 const ChebyChain::Block& ChebyChain::Blockchain::getBlock(std::size_t index) const { return chain.at(index); }

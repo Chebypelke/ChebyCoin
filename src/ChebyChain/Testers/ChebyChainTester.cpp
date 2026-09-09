@@ -24,6 +24,7 @@ void ChebyChain::Testers::ChebyChainTester()
         std::cout << "4. Validate blockchain" << std::endl;
         std::cout << "5. Save blockchain" << std::endl;
         std::cout << "6. Load blockchain" << std::endl;
+        std::cout << "7. Transaction test" << std::endl;
         std::cout << "0. Exit" << std::endl;
 
         std::cout << "Your choice: "; 
@@ -35,7 +36,9 @@ void ChebyChain::Testers::ChebyChainTester()
 
         switch (choice) {
         case 1:
+        {
             CLIUtils::clearScreen();
+
             std::cout << "Type block data: ";
 
             if(!CLIUtils::readString(data))
@@ -44,13 +47,17 @@ void ChebyChain::Testers::ChebyChainTester()
             }
 
             blockchain.addBlock(data);
+
             break;
+        }
         case 2: 
+        {            
             CLIUtils::clearScreen();
 
             std::cout << "Blocks count: " << blockchain.getBlockCount() << std::endl;
             
             break; 
+        }
         case 3:
         {
             CLIUtils::clearScreen();
@@ -78,6 +85,7 @@ void ChebyChain::Testers::ChebyChainTester()
             break; 
         }
         case 4:
+        {
             CLIUtils::clearScreen();
 
             if (!blockchain.isValid())
@@ -87,8 +95,11 @@ void ChebyChain::Testers::ChebyChainTester()
             }
             
             std::cout << "Blockchain is valid!" << std::endl;
+
             break;
+        }
         case 5:
+        {
             CLIUtils::clearScreen();
 
             if (!blockchain.saveBlockchain("blockchain.cbcchain"))
@@ -99,7 +110,9 @@ void ChebyChain::Testers::ChebyChainTester()
             
             std::cout << "Blockchain saved!" << std::endl;
             break;
+        }
         case 6:
+        {
             CLIUtils::clearScreen();
 
             if (!blockchain.loadBlockchain("blockchain.cbcchain"))
@@ -110,8 +123,44 @@ void ChebyChain::Testers::ChebyChainTester()
 
             std::cout << "Blockchain loaded" << std::endl;
             break;
+        }
+        case 7:
+        {
+            CLIUtils::clearScreen();
+
+            ChebyWallet::Wallet::WalletData walletA = ChebyWallet::Wallet::generateWallet();
+            ChebyWallet::Wallet::WalletData walletB = ChebyWallet::Wallet::generateWallet();
+
+            Transaction transaction(walletA.address, walletB.address, 100);
+
+            transaction.sign(walletA.keyPair);
+
+            if (transaction.verifySignature())
+            {
+                std::cerr << "SIGNATURE OK!\n";
+            }
+            else
+            {
+                std::cerr << "SIGNATURE BAD!\n";
+            }
+
+            if (transaction.isValid())
+            {
+                std::cerr << "VALID!\n";
+                blockchain.addBlock(transaction);
+            }
+            else
+            {
+                std::cerr << "INVALID!\n";
+            }
+
+            break;
+        }
         case 0:
+            CLIUtils::clearScreen();
+
             run = false;
+
             break;
         }
     }
