@@ -165,3 +165,8 @@ void ChebyChain::Testers::ChebyChainTester()
         }
     }
 }
+
+int main()
+{
+    ChebyChain::Testers::ChebyChainTester();
+}

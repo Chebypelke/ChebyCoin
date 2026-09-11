@@ -63,3 +63,8 @@ void ChebyHash::Testers::ChebyHash64Tester()
               << "Duration: " << duration.count() << "s." << std::endl
               << "Last hash: " << std::hex << last_hash;
 }
+
+int main()
+{
+    ChebyHash::Testers::ChebyHash64Tester();
+}

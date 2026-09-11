@@ -240,3 +240,8 @@ void ChebyWallet::Testers::ChebyWalletTester()
         }
     }
 }
+
+int main()
+{
+    ChebyWallet::Testers::ChebyWalletTester();
+}

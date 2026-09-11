@@ -162,3 +162,8 @@ void ChebyHash::Testers::ChebyHash32Tester()
         }
     }
 }
+
+int main()
+{
+    ChebyHash::Testers::ChebyHash32Tester();
+}

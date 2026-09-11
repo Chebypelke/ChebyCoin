@@ -111,3 +111,8 @@ void ChebySignature::Testers::ChebySignatureTester()
         }
     }
 }
+
+int main()
+{
+    ChebySignature::Testers::ChebySignatureTester();
+}
