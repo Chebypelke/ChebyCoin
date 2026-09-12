@@ -2,6 +2,7 @@
 #include "../Utils/Utils.hpp"
 #include <chrono>
 #include <cstddef>
+#include <cstdint>
 #include <fstream>
 
 std::uint64_t ChebyChain::Blockchain::getCurrentTimestamp() const
@@ -224,5 +225,66 @@ bool ChebyChain::Blockchain::loadBlockchain(const std::string& path)
 
     chain = std::move(loadedChain);
 
+    return true;
+}
+
+std::uint64_t ChebyChain::Blockchain::getBalance(ChebyWallet::Wallet::Address address) const 
+{
+    std::uint64_t balance = 0;
+
+    for (const Block& block : chain)
+    {
+        const auto& transaction = block.getBlockTransaction();
+
+        if (!transaction)
+        {
+            continue;
+        }
+
+        if (transaction->getFromAddress().value.high == address.value.high && 
+            transaction->getFromAddress().value.low == address.value.low)
+        {
+            if (transaction->getAmount() > balance)
+            {
+                balance = 0;
+            }
+            else
+            {
+                balance -= transaction->getAmount();
+            }
+        }
+
+        if (transaction->getToAddress().value.high == address.value.high && 
+            transaction->getToAddress().value.low == address.value.low)
+        {
+            balance += transaction->getAmount();
+        }
+    }
+
+    return balance;
+}
+
+bool ChebyChain::Blockchain::sendCoins(const ChebyWallet::Wallet::WalletData& from, const ChebyWallet::Wallet::Address to, std::uint64_t amount)
+{
+    if (getBalance(from.address) < amount)
+    {
+        return false;
+    }
+
+    Transaction transaction(from.address, to, amount);
+    transaction.sign(from.keyPair);
+
+
+    if (!transaction.verifySignature())
+    {
+        return false;
+    }
+
+    if (!transaction.isValid())
+    {
+        return false;
+    }
+
+    addBlock(transaction);
     return true;
 }

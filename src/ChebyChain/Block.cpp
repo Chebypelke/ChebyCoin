@@ -33,3 +33,4 @@ std::uint64_t ChebyChain::Block::getBlockHash() const { return hash; }
 std::uint64_t ChebyChain::Block::getBlockPreviousHash() const { return previousHash; }
 std::uint64_t ChebyChain::Block::getBlockTimestamp() const { return timestamp; }
 const std::string& ChebyChain::Block::getBlockData() const { return data; }
+const std::optional<Transaction>& ChebyChain::Block::getBlockTransaction() const { return transaction; }

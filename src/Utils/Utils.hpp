@@ -12,13 +12,15 @@ namespace CLIUtils
     bool readSizeT(std::size_t& size_t_data);
     bool readString(std::string& string_data);
     bool readUInt32(std::uint32_t& uint32_t_data);
+    bool readHash128(ChebyHash::ChebyHash128::Hash128& hash);
+    bool readDouble(double& double_data);
 }
 
 namespace FileUtils {
     constexpr std::uint64_t WALLET_MAGIC = 0x43484357414C4C45;      // "CHCWALLE"
     constexpr std::uint64_t BLOCKCHAIN_MAGIC = 0x434843424C4F434B; // "CHCBLOCK"
     constexpr std::uint32_t WALLET_VERSION = 1;
-    constexpr std::uint32_t BLOCKCHAIN_VERSION = 1;
+    constexpr std::uint32_t BLOCKCHAIN_VERSION = 2;
 
     bool writeUint32(std::ofstream& file, std::uint32_t value);
     bool readUint32(std::ifstream& file, std::uint32_t& value);

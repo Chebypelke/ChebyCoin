@@ -53,3 +53,52 @@ bool CLIUtils::readUInt32(std::uint32_t& uint32_t_data)
 
     return true;
 }
+
+bool CLIUtils::readHash128(ChebyHash::ChebyHash128::Hash128& hash)
+{
+    std::string input;
+
+    if (!(std::cin >> input))
+    {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        return false;
+    }
+
+    if (input.length() != 32)
+    {
+        return false;
+    }
+
+    for (char c : input)
+    {
+        if (!std::isxdigit(static_cast<unsigned char>(c)))
+        {
+            return false;
+        }
+    }
+
+    try
+    {
+        hash.high = std::stoull(input.substr(0, 16), nullptr, 16);
+        hash.low = std::stoull(input.substr(16, 16), nullptr, 16);
+    }
+    catch (...)
+    {
+        return false;
+    }
+
+    return true;
+}
+
+bool CLIUtils::readDouble(double &double_data)
+{
+    if (!(std::cin >> double_data))
+    {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        return false;
+    }
+
+    return true;
+}

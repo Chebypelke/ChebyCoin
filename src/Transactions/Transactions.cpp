@@ -63,3 +63,7 @@ bool Transaction::isValid() const
 
     return false;
 }
+
+std::uint64_t Transaction::getAmount() const { return amount; }
+const ChebyWallet::Wallet::Address& Transaction::getFromAddress() const { return from; }
+const ChebyWallet::Wallet::Address& Transaction::getToAddress() const { return to; }

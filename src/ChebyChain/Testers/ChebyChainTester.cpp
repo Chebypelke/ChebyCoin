@@ -25,6 +25,7 @@ void ChebyChain::Testers::ChebyChainTester()
         std::cout << "5. Save blockchain" << std::endl;
         std::cout << "6. Load blockchain" << std::endl;
         std::cout << "7. Transaction test" << std::endl;
+        std::cout << "8. Get transactions data" << std::endl;
         std::cout << "0. Exit" << std::endl;
 
         std::cout << "Your choice: "; 
@@ -152,6 +153,22 @@ void ChebyChain::Testers::ChebyChainTester()
             else
             {
                 std::cerr << "INVALID!\n";
+            }
+
+            break;
+        }
+        case 8:
+        {
+            CLIUtils::clearScreen();
+
+            for (std::size_t blocks = 1; blocks < blockchain.getBlockCount(); ++blocks)
+            {
+                const Block& current = blockchain.getBlock(blocks);
+
+                if (current.getBlockTransaction())
+                {
+                    std::cout << current.getBlockTransaction()->getSigningData() << std::endl;
+                }
             }
 
             break;

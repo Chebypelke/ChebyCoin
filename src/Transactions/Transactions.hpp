@@ -4,11 +4,19 @@
 
 class Transaction
 {
+private:
+    ChebyWallet::Wallet::Address from;
+    ChebyWallet::Wallet::Address to;
+    std::uint64_t amount;
+
+    ChebySignature::PublicKey publicKey;
+    ChebySignature::Hash128 signature;
+
 public:
     Transaction(
         const ChebyWallet::Wallet::Address& from,
         const ChebyWallet::Wallet::Address& to,
-        uint64_t amount
+        std::uint64_t amount
     );
 
     std::string getSigningData() const;
@@ -18,11 +26,7 @@ public:
     bool verifySignature() const;
     bool isValid() const;
 
-private:
-    ChebyWallet::Wallet::Address from;
-    ChebyWallet::Wallet::Address to;
-    uint64_t amount;
-
-    ChebySignature::PublicKey publicKey;
-    ChebySignature::Hash128 signature;
+    std::uint64_t getAmount() const;
+    const ChebyWallet::Wallet::Address& getFromAddress() const;
+    const ChebyWallet::Wallet::Address& getToAddress() const;
 };

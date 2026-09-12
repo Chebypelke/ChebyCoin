@@ -11,9 +11,8 @@ namespace ChebyCoinApp
     public:
         enum class MainMenuChoice {
             Wallet = 1,
-            Transactions = 2,
-            Blockchain = 3,
-            Mining = 4,
+            Blockchain = 2,
+            Mining = 3,
             Exit = 0
         };
 

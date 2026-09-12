@@ -40,6 +40,7 @@ namespace ChebyChain {
         std::uint64_t getBlockPreviousHash() const;
         std::uint64_t getBlockTimestamp() const;
         const std::string& getBlockData() const;
+        const std::optional<Transaction>& getBlockTransaction() const;
     };
 
     class Blockchain
@@ -60,5 +61,8 @@ namespace ChebyChain {
 
         bool saveBlockchain(const std::string& path) const;
         bool loadBlockchain(const std::string& path);
+
+        std::uint64_t getBalance(ChebyWallet::Wallet::Address address) const;
+        bool sendCoins(const ChebyWallet::Wallet::WalletData& from, const ChebyWallet::Wallet::Address to, std::uint64_t amount);
     };
 }

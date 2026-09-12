@@ -116,12 +116,81 @@ void ChebyCoinApp::App::runWalletMenu()
 
             break;
         }
-        case ChebyCoinApp::WalletMenu::WalletMenuChoice::Balance: // Заглушка
+        case ChebyCoinApp::WalletMenu::WalletMenuChoice::Balance: 
+        {
             CLIUtils::clearScreen();
+
+            std::cerr << "[*] Checking balance...";
+
+            if (blockchain)
+            {
+                auto balance = blockchain->getBalance(wallet->address);
+
+                std::cerr << " DONE!" << std::endl;
+
+                std::cout << "Wallet balance: " << balance << std::endl;
+            }
+            else
+            {
+                std::cerr << " FAIL! Load blockchain!" << std::endl;
+            }
+
             break;
-        case ChebyCoinApp::WalletMenu::WalletMenuChoice::SendCoins: // Заглушка
+        }
+        case ChebyCoinApp::WalletMenu::WalletMenuChoice::SendCoins: 
+        {
             CLIUtils::clearScreen();
+
+            ChebyHash::ChebyHash128::Hash128 to{0, 0};
+            double userCoinsAmount = 0.0;
+
+            std::cout << "Enter the destination address(in HEX): " << std::endl; 
+            std::cout << "> ";
+
+            if (!CLIUtils::readHash128(to))
+            {
+                std::cout << "ERROR: address must be 32 HEX characters!" << std::endl;
+                continue;
+            }
+
+            std::cout << "Enter coins count(0.001 minimal): " << std::endl;
+            std::cout << "> ";
+
+            if (!CLIUtils::readDouble(userCoinsAmount))
+            {
+                std::cout << "ERROR: type number!" << std::endl;
+                continue;
+            }
+
+            if (userCoinsAmount < 0.001)
+            {
+                std::cout << "ERROR: minimum amount is 0.001 CHEBY!" << std::endl;
+                continue;
+            }
+
+            std::cerr << "[*] Sending coins...";
+
+            std::uint64_t amount = userCoinsAmount * 1000;
+            ChebyWallet::Wallet::Address toAddress{to.high, to.low};
+
+            if (blockchain)
+            {
+                if (blockchain->sendCoins(wallet.value(), toAddress, amount))
+                {
+                    std::cerr << " DONE!" << std::endl;
+                }
+                else
+                {
+                    std::cerr << " FAIL! Check balance, or try again after a while." << std::endl;
+                }
+            }
+            else
+            {
+                std::cerr << " FAIL! Load blockchain!" << std::endl;
+            }
+
             break;
+        }
         case ChebyCoinApp::WalletMenu::WalletMenuChoice::Transactions: // Заглушка
             CLIUtils::clearScreen();
             break;
@@ -247,8 +316,6 @@ void ChebyCoinApp::App::runBlockchainMenu()
 	        }
 
             std::cerr << "[*] We locate block...";
-            
-            auto blockIndex = blockNumber - 1;
 
             if (blockNumber == 0)
             {
@@ -260,6 +327,8 @@ void ChebyCoinApp::App::runBlockchainMenu()
                 CLIUtils::clearScreen();
                 break;
             }
+
+            auto blockIndex = blockNumber - 1;
 
             if (blockNumber > blockchain->getBlockCount())
             {
@@ -324,9 +393,6 @@ void ChebyCoinApp::App::run()
 
             break;
         }
-        case ChebyCoinApp::MainMenu::MainMenuChoice::Transactions: // Заглушка 
-            CLIUtils::clearScreen();
-            break; 
         case ChebyCoinApp::MainMenu::MainMenuChoice::Blockchain: 
         {
             CLIUtils::clearScreen();
@@ -338,10 +404,15 @@ void ChebyCoinApp::App::run()
         case ChebyCoinApp::MainMenu::MainMenuChoice::Mining: // Заглушка
             CLIUtils::clearScreen();
             break; 
-        case ChebyCoinApp::MainMenu::MainMenuChoice::Exit: // Заглушка
+        case ChebyCoinApp::MainMenu::MainMenuChoice::Exit:
+        {
             CLIUtils::clearScreen();
+
             run = false;
+
             break;
+        }
+
         }
     }
 }
