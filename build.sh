@@ -116,6 +116,7 @@ fi
 echo "$BUILD_MODE, $TYPE, let's compile it!"
 
 echo "CMake log: "
+echo ""
 
 cmake -S . -B build -DCMAKE_BUILD_TYPE="$BUILD_MODE"
 STATUS=$?

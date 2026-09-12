@@ -11,7 +11,7 @@ void ChebyHash::Testers::ChebyHash32Tester()
     bool run = true;
     int choice = 0;
 
-    uint64_t last_hash = 0;
+    uint32_t last_hash = 0;
 
     std::uint32_t TEST_COUNT = 0;
     constexpr std::uint32_t DETERMINISM_TEST_COUNT = 10'000;
