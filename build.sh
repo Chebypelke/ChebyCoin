@@ -1,13 +1,11 @@
 #!/bin/bash
 
+VERSION="1.0.0"
 BUILD_MODE=""
 TYPE=""
 
 print_help()
 {
-    echo "ChebyCoin build script v1"
-    echo ""
-
     echo "Usage: "
     echo ""
     echo "./build.sh [options]"
@@ -16,6 +14,7 @@ print_help()
     echo "Arguments: "
     echo ""
     echo "    --help        - show this help page"
+    echo "    --version     - show build script version"
     echo ""
     echo "    --build-mode  - choose compiler build mode"
     echo "        Release"
@@ -33,6 +32,12 @@ print_help()
     echo ""
 }
 
+print_version()
+{
+    echo "ChebyCoin build script $VERSION"
+    echo ""
+}
+
 while [[ $# -gt 0 ]]; do 
     case "$1" in
         --help)
@@ -40,7 +45,11 @@ while [[ $# -gt 0 ]]; do
             
             exit 0
             ;;
-
+        --version)
+            print_version
+            
+            exit 0 
+            ;;
         --build-mode)
             if [[ $# -lt 2 ]]; then
                 echo "Missing '--build-mode' value"
