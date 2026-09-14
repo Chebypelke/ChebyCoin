@@ -23,6 +23,7 @@ ChebyCoinApp::WalletMenu::WalletMenuChoice ChebyCoinApp::WalletMenu::walletMenu(
             std::cout << "4. Transactions" << std::endl;
             std::cout << "5. Save Wallet" << std::endl;
             std::cout << "0. Back" << std::endl;
+            std::cout << "111. DEBUG - GIVE 1 CHEBY" << std::endl;
 
             std::cout << "Your choice: " << std::endl;
             std::cout << "> ";
@@ -53,6 +54,9 @@ ChebyCoinApp::WalletMenu::WalletMenuChoice ChebyCoinApp::WalletMenu::walletMenu(
             case 0:
                 CLIUtils::clearScreen();
                 return WalletMenuChoice::Back;
+            case 111:
+                CLIUtils::clearScreen();
+                return WalletMenuChoice::Debug;
             default:
                 CLIUtils::clearScreen();
                 std::cout << "ERROR: Invalid choice" << std::endl;

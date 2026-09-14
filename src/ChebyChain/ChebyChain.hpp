@@ -64,5 +64,8 @@ namespace ChebyChain {
 
         std::uint64_t getBalance(ChebyWallet::Wallet::Address address) const;
         bool sendCoins(const ChebyWallet::Wallet::WalletData& from, const ChebyWallet::Wallet::Address to, std::uint64_t amount);
+        bool spawnCoins(const ChebyWallet::Wallet::Address& to,std::uint64_t amount);
+
+        bool syncBlockchain(const std::string& path);
     };
 }

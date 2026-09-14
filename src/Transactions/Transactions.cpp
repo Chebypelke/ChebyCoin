@@ -10,6 +10,13 @@ Transaction::Transaction(
 {
 }
 
+Transaction::Transaction(
+    const ChebyWallet::Wallet::Address& to,
+    uint64_t amount
+) : to(to), amount(amount), spawn(true)
+{
+}
+
 std::string Transaction::getSigningData() const
 {
     std::string signingData = std::to_string(from.value.high) + ":" +
@@ -51,17 +58,17 @@ bool Transaction::verifySignature() const
 
 bool Transaction::isValid() const
 {
-    if (verifySignature())
+    if (amount == 0)
     {
-        if (amount == 0)
-        {
-            return false;
-        }
+        return false;
+    }
 
+    if (spawn)
+    {
         return true;
     }
 
-    return false;
+    return verifySignature();
 }
 
 std::uint64_t Transaction::getAmount() const { return amount; }

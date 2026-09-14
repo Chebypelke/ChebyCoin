@@ -288,3 +288,27 @@ bool ChebyChain::Blockchain::sendCoins(const ChebyWallet::Wallet::WalletData& fr
     addBlock(transaction);
     return true;
 }
+
+bool ChebyChain::Blockchain::spawnCoins(const ChebyWallet::Wallet::Address& to, std::uint64_t amount)
+{
+    Transaction transaction(to, amount);
+
+    if (!transaction.isValid())
+    {
+        return false;
+    }
+
+    addBlock(transaction);
+
+    return true;
+}
+
+bool ChebyChain::Blockchain::syncBlockchain(const std::string& path)
+{
+    if (loadBlockchain(path))
+    {
+        return true;
+    }
+
+    return false;
+}

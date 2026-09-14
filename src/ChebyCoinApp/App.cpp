@@ -124,7 +124,7 @@ void ChebyCoinApp::App::runWalletMenu()
 
             if (blockchain)
             {
-                auto balance = blockchain->getBalance(wallet->address);
+                auto balance = static_cast<double>(blockchain->getBalance(wallet->address)) / CHEBY_UNIT;
 
                 std::cerr << " DONE!" << std::endl;
 
@@ -178,6 +178,14 @@ void ChebyCoinApp::App::runWalletMenu()
                 if (blockchain->sendCoins(wallet.value(), toAddress, amount))
                 {
                     std::cerr << " DONE!" << std::endl;
+                    if (blockchain->saveBlockchain("blockchain.cbcchain"))
+                    {
+                        std::cerr << " DONE!" << std::endl;
+                    }
+                    else
+                    {
+                        std::cerr << " FAILED TO SAVE BLOCKCHAIN!" << std::endl;
+                    }
                 }
                 else
                 {
@@ -222,7 +230,19 @@ void ChebyCoinApp::App::runWalletMenu()
             CLIUtils::clearScreen();
             inWalletMenu = false;
             break;
+        case ChebyCoinApp::WalletMenu::WalletMenuChoice::Debug:
+        {
+            CLIUtils::clearScreen();
+
+            if (blockchain->spawnCoins(wallet->address, CHEBY_UNIT))
+            {
+                blockchain->saveBlockchain("blockchain.cbcchain");
+            }
+
+            break;
         }
+        }
+        
     }
 }
 
@@ -364,6 +384,30 @@ void ChebyCoinApp::App::runBlockchainMenu()
             CLIUtils::clearScreen();
 
             break; 
+        }
+        case ChebyCoinApp::BlockchainMenu::BlockchainMenuChoice::SyncBlockchain:
+        {
+            CLIUtils::clearScreen();
+
+            std::cerr << "[+] Sync blockchain...";
+
+            blockchain.emplace();
+
+            if (!blockchain->syncBlockchain("blockchain.cbcchain"))
+            {
+                std::cerr << " FAILED!" << std::endl << std::endl;
+                blockchain.reset();
+                break;
+            }
+
+            std::cerr << " DONE!" << std::endl << std::endl;
+
+            std::cout << "To turn back press enter";
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cin.get();
+
+            CLIUtils::clearScreen();
+            break;
         }
         case ChebyCoinApp::BlockchainMenu::BlockchainMenuChoice::Back:
             CLIUtils::clearScreen();

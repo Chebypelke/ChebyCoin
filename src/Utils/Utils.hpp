@@ -1,6 +1,8 @@
 #include "../ChebyHash/ChebyHash.hpp"
 #include <string>
 
+constexpr std::uint64_t CHEBY_UNIT = 1000;
+
 std::string RandomStringGenerator(size_t length);
 std::string RandomNumberGenerator(size_t length);
 
@@ -20,8 +22,8 @@ namespace FileUtils {
     constexpr std::uint64_t WALLET_MAGIC = 0x43484357414C4C45;      // "CHCWALLE"
     constexpr std::uint64_t BLOCKCHAIN_MAGIC = 0x434843424C4F434B; // "CHCBLOCK"
     constexpr std::uint32_t WALLET_VERSION = 1;
-    constexpr std::uint32_t BLOCKCHAIN_VERSION = 2;
-
+    constexpr std::uint32_t BLOCKCHAIN_VERSION = 1;
+    
     bool writeUint32(std::ofstream& file, std::uint32_t value);
     bool readUint32(std::ifstream& file, std::uint32_t& value);
     bool writeUint64(std::ofstream& file, std::uint64_t value);

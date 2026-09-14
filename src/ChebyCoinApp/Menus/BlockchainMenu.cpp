@@ -12,13 +12,14 @@ ChebyCoinApp::BlockchainMenu::BlockchainMenuChoice ChebyCoinApp::BlockchainMenu:
 
     while (true)
     {
-        std::cout << "===== ChebyCoin App - Wallet =====" << std::endl;
+        std::cout << "===== ChebyCoin App - Blockchain =====" << std::endl;
 
         if (blockchain)
         {
             std::cout << "1. Blockchain Info" << std::endl;
             std::cout << "2. Validate Blockchain" << std::endl;
             std::cout << "3. Show Block" << std::endl;
+            std::cout << "4. Sync Blockchain" << std::endl;
             std::cout << "0. Back" << std::endl;
 
             std::cout << "Your choice: " << std::endl;
@@ -41,6 +42,9 @@ ChebyCoinApp::BlockchainMenu::BlockchainMenuChoice ChebyCoinApp::BlockchainMenu:
             case 3:
                 CLIUtils::clearScreen();
                 return BlockchainMenuChoice::ShowBlock;
+            case 4:
+                CLIUtils::clearScreen();
+                return BlockchainMenuChoice::SyncBlockchain;
             case 0:
                 CLIUtils::clearScreen();
                 return BlockchainMenuChoice::Back;

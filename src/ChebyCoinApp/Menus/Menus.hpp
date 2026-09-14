@@ -33,7 +33,8 @@ namespace ChebyCoinApp
             SendCoins = 5,
             Transactions = 6,
             SaveWallet = 7,
-            Back = 0
+            Back = 0,
+            Debug = 111
         };
 
         explicit WalletMenu(std::optional<ChebyWallet::Wallet::WalletData>& wallet);
@@ -52,6 +53,7 @@ namespace ChebyCoinApp
             BlockchainInfo = 2,
             ValidateBlockchain = 3,
             ShowBlock = 4,
+            SyncBlockchain = 5,
             Back = 0
         };
         

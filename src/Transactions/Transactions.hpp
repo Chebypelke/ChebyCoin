@@ -12,9 +12,16 @@ private:
     ChebySignature::PublicKey publicKey;
     ChebySignature::Hash128 signature;
 
+    bool spawn = false;
+
 public:
     Transaction(
         const ChebyWallet::Wallet::Address& from,
+        const ChebyWallet::Wallet::Address& to,
+        std::uint64_t amount
+    );
+
+    Transaction(
         const ChebyWallet::Wallet::Address& to,
         std::uint64_t amount
     );
