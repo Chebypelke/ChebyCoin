@@ -1,4 +1,5 @@
 #include "../ChebyHash/ChebyHash.hpp"
+#include "../Transactions/Transactions.hpp"
 #include <string>
 
 constexpr std::uint64_t CHEBY_UNIT = 1000;
@@ -32,4 +33,6 @@ namespace FileUtils {
     bool readHash128(std::ifstream& file, ChebyHash::ChebyHash128::Hash128& value);
     bool writeString(std::ofstream& file, const std::string& value);
     bool readString(std::ifstream& file, std::string& value);
+    bool writeTransaction(std::ofstream& file, const Transaction& value);
+    bool readTransaction(std::ifstream& file, Transaction& value);
 }

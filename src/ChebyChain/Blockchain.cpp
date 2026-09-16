@@ -108,6 +108,23 @@ bool ChebyChain::Blockchain::saveBlockchain(const std::string& path) const
             return false;
         }
 
+        const std::uint8_t hasTransaction = block.getBlockTransaction().has_value() ? 1 : 0;
+
+        file.write(reinterpret_cast<const char*>(&hasTransaction), sizeof(hasTransaction));
+
+        if (!file)
+        {
+            return false;
+        }
+
+        if (hasTransaction)
+        {
+            if (!FileUtils::writeTransaction(file, block.getBlockTransaction().value()))
+            {
+                return false;
+            }
+        }
+
         if (!FileUtils::writeUint64(file, block.getBlockPreviousHash()))
         {
             return false;
@@ -188,6 +205,29 @@ bool ChebyChain::Blockchain::loadBlockchain(const std::string& path)
             return false;
         }
 
+        std::uint8_t hasTransaction = 0;
+
+        file.read(reinterpret_cast<char*>(&hasTransaction), sizeof(hasTransaction));
+
+        if (!file)
+        {
+            return false;
+        }
+
+        std::optional<Transaction> transaction;
+
+        if (hasTransaction)
+        {
+            Transaction loadedTransaction(ChebyWallet::Wallet::Address{}, ChebyWallet::Wallet::Address{}, 0);
+
+            if (!FileUtils::readTransaction(file, loadedTransaction))
+            {
+                return false;
+            }
+
+            transaction = loadedTransaction;
+        }
+
         if (!FileUtils::readUint64(file, previousHash))
         {
             return false;
@@ -198,12 +238,9 @@ bool ChebyChain::Blockchain::loadBlockchain(const std::string& path)
             return false;
         }
 
-        Block block(
-            index,
-            timestamp,
-            data,
-            previousHash
-        );
+        Block block = transaction
+            ? Block(index, timestamp, transaction.value(), previousHash)
+            : Block(index, timestamp, data, previousHash);
 
         if (block.getBlockHash() != savedHash)
         {

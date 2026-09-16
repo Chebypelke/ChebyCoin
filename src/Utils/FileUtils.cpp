@@ -66,3 +66,109 @@ bool FileUtils::readString(std::ifstream& file, std::string& value)
 
     return static_cast<bool>(file);
 }
+
+bool FileUtils::writeTransaction(std::ofstream& file, const Transaction& transaction)
+{
+    if (!writeHash128(file, transaction.getFromAddress().value))
+    {
+        return false;
+    }
+
+    if (!writeHash128(file, transaction.getToAddress().value))
+    {
+        return false;
+    }
+
+    if (!writeUint64(file, transaction.getAmount()))
+    {
+        return false;
+    }
+
+    if (!writeHash128(file, transaction.getPublicKey().modulus))
+    {
+        return false;
+    }
+
+    if (!writeHash128(file, transaction.getPublicKey().publicExponent))
+    {
+        return false;
+    }
+
+    if (!writeHash128(file, transaction.getSignature()))
+    {
+        return false;
+    }
+
+    const std::uint8_t spawn = transaction.isSpawn() ? 1 : 0;
+    file.write(reinterpret_cast<const char*>(&spawn), sizeof(spawn));
+
+    return static_cast<bool>(file);
+}
+
+bool FileUtils::readTransaction(std::ifstream& file, Transaction& transaction)
+{
+    ChebyHash::ChebyHash128::Hash128 fromHash;
+    ChebyHash::ChebyHash128::Hash128 toHash;
+
+    std::uint64_t amount = 0;
+
+    ChebySignature::PublicKey publicKey;
+    ChebySignature::Hash128 signature;
+
+    std::uint8_t spawn = 0;
+
+    if (!readHash128(file, fromHash))
+    {
+        return false;
+    }
+
+    if (!readHash128(file, toHash))
+    {
+        return false;
+    }
+
+    if (!readUint64(file, amount))
+    {
+        return false;
+    }
+
+    if (!readHash128(file, publicKey.modulus))
+    {
+        return false;
+    }
+
+    if (!readHash128(file, publicKey.publicExponent))
+    {
+        return false;
+    }
+
+    if (!readHash128(file, signature))
+    {
+        return false;
+    }
+        
+
+    file.read(reinterpret_cast<char*>(&spawn), sizeof(spawn));
+
+    if (!file)
+    {
+        return false;
+    } 
+
+    ChebyWallet::Wallet::Address from;
+    ChebyWallet::Wallet::Address to;
+
+    from.value = fromHash;
+    to.value = toHash;
+
+    transaction = Transaction(
+        from,
+        to,
+        amount,
+        publicKey,
+        signature,
+        spawn != 0
+    );
+
+    return true;
+}
