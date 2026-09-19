@@ -2,12 +2,13 @@
 #include "ChebySignatureTesters.hpp"
 #include "../../Utils/Utils.hpp"
 #include <iostream>
-#include <limits>
 #include <ostream>
 #include <chrono>
 
 void ChebySignature::Testers::ChebySignatureTester()
 {
+    CLIUtils::clearScreen();
+
     int choice;
     bool run = true;
 
@@ -20,15 +21,14 @@ void ChebySignature::Testers::ChebySignatureTester()
         std::cout << "0. Exit" << std::endl;
 
         std::cout << "Your choice: "; 
-        if (!(std::cin >> choice)) {
-		    std::cout << "ERROR: type number!" << std::endl; 
-		    std::cin.clear();
-		    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-		    continue;
-	    }
+        if (!CLIUtils::readInt(choice))
+        {
+            std::cout << "ERROR: type number!" << std::endl; 
+            continue;
+        }
 
         switch (choice) {
-        case 1:
+        case 1: // Sign test
         {
             CLIUtils::clearScreen();
 
@@ -106,6 +106,7 @@ void ChebySignature::Testers::ChebySignatureTester()
             break;
         }
         case 0:
+            CLIUtils::clearScreen();
             run = false;
             break;
         }

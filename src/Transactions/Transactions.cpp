@@ -10,12 +10,16 @@ Transaction::Transaction(
 {
 }
 
+// Spawn transaction
+
 Transaction::Transaction(
     const ChebyWallet::Wallet::Address& to,
     uint64_t amount
 ) : to(to), amount(amount), spawn(true)
 {
 }
+
+// For blockchain load
 
 Transaction::Transaction(
     const ChebyWallet::Wallet::Address& from,
@@ -24,13 +28,7 @@ Transaction::Transaction(
     const ChebySignature::PublicKey& publicKey,
     const ChebySignature::Hash128& signature,
     bool spawn
-)
-    : from(from),
-      to(to),
-      amount(amount),
-      publicKey(publicKey),
-      signature(signature),
-      spawn(spawn)
+) : from(from), to(to), amount(amount), publicKey(publicKey), signature(signature), spawn(spawn)
 {
 }
 
@@ -88,9 +86,14 @@ bool Transaction::isValid() const
     return verifySignature();
 }
 
+// Getters
+// ---
+
 std::uint64_t Transaction::getAmount() const { return amount; }
 const ChebyWallet::Wallet::Address& Transaction::getFromAddress() const { return from; }
 const ChebyWallet::Wallet::Address& Transaction::getToAddress() const { return to; }
 const ChebySignature::PublicKey& Transaction::getPublicKey() const { return publicKey; }
 const ChebySignature::Hash128& Transaction::getSignature() const { return signature; }
 bool Transaction::isSpawn() const { return spawn; }
+
+// ---

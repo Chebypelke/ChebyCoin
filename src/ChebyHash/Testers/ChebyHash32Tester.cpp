@@ -8,6 +8,8 @@
 
 void ChebyHash::Testers::ChebyHash32Tester()
 {
+    CLIUtils::clearScreen();
+
     bool run = true;
     int choice = 0;
 
@@ -33,11 +35,11 @@ void ChebyHash::Testers::ChebyHash32Tester()
         }
 
         switch (choice) {
-        case 1:
+        case 1: // Avalance test
         {
             CLIUtils::clearScreen();
-            std::cout << "Type tests count: ";
 
+            std::cout << "Type tests count: ";
             if (!CLIUtils::readUInt32(TEST_COUNT)) 
             {
                 std::cout << "ERROR: type number!" << std::endl; 
@@ -98,7 +100,7 @@ void ChebyHash::Testers::ChebyHash32Tester()
 
             break;
         }
-        case 2: 
+        case 2: // Determinism test
         {
             CLIUtils::clearScreen();
 
@@ -154,11 +156,9 @@ void ChebyHash::Testers::ChebyHash32Tester()
             break; 
         }
         case 0:
-        {
+            CLIUtils::clearScreen();
             run = false;
             break;
-        }
-
         }
     }
 }

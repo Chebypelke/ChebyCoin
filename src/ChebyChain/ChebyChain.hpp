@@ -55,17 +55,17 @@ namespace ChebyChain {
         void addBlock(const std::string& data);
         void addBlock(const Transaction& transaction);
 
-        std::size_t getBlockCount() const;
-        const Block& getBlock(std::size_t index) const;
         bool isValid() const;
 
         bool saveBlockchain(const std::string& path) const;
         bool loadBlockchain(const std::string& path);
+        bool syncBlockchain(const std::string& path);
 
         std::uint64_t getBalance(ChebyWallet::Wallet::Address address) const;
         bool sendCoins(const ChebyWallet::Wallet::WalletData& from, const ChebyWallet::Wallet::Address to, std::uint64_t amount);
         bool spawnCoins(const ChebyWallet::Wallet::Address& to,std::uint64_t amount);
 
-        bool syncBlockchain(const std::string& path);
+        std::size_t getBlockCount() const;
+        const Block& getBlock(std::size_t index) const;
     };
 }

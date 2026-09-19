@@ -2,7 +2,6 @@
 #include "../ChebyWallet.hpp"
 #include "../../Utils/Utils.hpp"
 #include <iostream>
-#include <limits>
 #include <ostream>
 #include <chrono>
 
@@ -23,12 +22,11 @@ void ChebyWallet::Testers::ChebyWalletTester()
         std::cout << "0. Exit" << std::endl;
 
         std::cout << "Your choice: "; 
-        if (!(std::cin >> choice)) {
-		    std::cout << "ERROR: type number!" << std::endl; 
-		    std::cin.clear();
-		    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-		    continue;
-	    }
+        if (!CLIUtils::readInt(choice))
+        {
+            std::cout << "ERROR: type number!" << std::endl; 
+            continue;
+        }
 
         switch (choice) {
         case 1: // Create Wallet
@@ -89,12 +87,11 @@ void ChebyWallet::Testers::ChebyWalletTester()
             std::uint32_t fail = 0;
 
             std::cout << "Type test count: "; 
-            if (!(std::cin >> TEST_COUNT)) {
-		        std::cout << "ERROR: type number!" << std::endl; 
-		        std::cin.clear();
-		        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-		        continue;
-	        }
+            if (!CLIUtils::readUInt32(TEST_COUNT))
+            {
+                std::cout << "ERROR: type number!" << std::endl; 
+                continue;
+            }
 
             const std::uint32_t progressSteps = 10;
             const std::uint32_t progressInterval = std::max<std::uint32_t>(1, TEST_COUNT / progressSteps);
@@ -167,12 +164,11 @@ void ChebyWallet::Testers::ChebyWalletTester()
             std::uint32_t fail = 0;
 
             std::cout << "Type test count: "; 
-            if (!(std::cin >> TEST_COUNT)) {
-		        std::cout << "ERROR: type number!" << std::endl; 
-		        std::cin.clear();
-		        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-		        continue;
-	        }
+            if (!CLIUtils::readUInt32(TEST_COUNT))
+            {
+                std::cout << "ERROR: type number!" << std::endl; 
+                continue;
+            }
 
             const std::uint32_t progressSteps = 10;
             const std::uint32_t progressInterval = std::max<std::uint32_t>(1, TEST_COUNT / progressSteps);
@@ -235,6 +231,7 @@ void ChebyWallet::Testers::ChebyWalletTester()
             break;
         }
         case 0:
+            CLIUtils::clearScreen();
             run = false;
             break;
         }

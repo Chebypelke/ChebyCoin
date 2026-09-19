@@ -41,10 +41,6 @@ void ChebyChain::Blockchain::addBlock(const Transaction& transaction)
     );
 }
 
-std::size_t ChebyChain::Blockchain::getBlockCount() const { return chain.size(); }
-
-const ChebyChain::Block& ChebyChain::Blockchain::getBlock(std::size_t index) const { return chain.at(index); }
-
 bool ChebyChain::Blockchain::isValid() const
 {
     for (std::size_t blocks = 1; blocks < chain.size(); ++blocks)
@@ -64,6 +60,9 @@ bool ChebyChain::Blockchain::isValid() const
 
     return true;
 }
+
+// Blockchain file
+// ---
 
 bool ChebyChain::Blockchain::saveBlockchain(const std::string& path) const
 {
@@ -265,41 +264,17 @@ bool ChebyChain::Blockchain::loadBlockchain(const std::string& path)
     return true;
 }
 
-std::uint64_t ChebyChain::Blockchain::getBalance(ChebyWallet::Wallet::Address address) const 
+bool ChebyChain::Blockchain::syncBlockchain(const std::string& path)
 {
-    std::uint64_t balance = 0;
-
-    for (const Block& block : chain)
+    if (loadBlockchain(path))
     {
-        const auto& transaction = block.getBlockTransaction();
-
-        if (!transaction)
-        {
-            continue;
-        }
-
-        if (transaction->getFromAddress().value.high == address.value.high && 
-            transaction->getFromAddress().value.low == address.value.low)
-        {
-            if (transaction->getAmount() > balance)
-            {
-                balance = 0;
-            }
-            else
-            {
-                balance -= transaction->getAmount();
-            }
-        }
-
-        if (transaction->getToAddress().value.high == address.value.high && 
-            transaction->getToAddress().value.low == address.value.low)
-        {
-            balance += transaction->getAmount();
-        }
+        return true;
     }
 
-    return balance;
+    return false;
 }
+
+// ---
 
 bool ChebyChain::Blockchain::sendCoins(const ChebyWallet::Wallet::WalletData& from, const ChebyWallet::Wallet::Address to, std::uint64_t amount)
 {
@@ -340,12 +315,46 @@ bool ChebyChain::Blockchain::spawnCoins(const ChebyWallet::Wallet::Address& to, 
     return true;
 }
 
-bool ChebyChain::Blockchain::syncBlockchain(const std::string& path)
+std::uint64_t ChebyChain::Blockchain::getBalance(ChebyWallet::Wallet::Address address) const 
 {
-    if (loadBlockchain(path))
+    std::uint64_t balance = 0;
+
+    for (const Block& block : chain)
     {
-        return true;
+        const auto& transaction = block.getBlockTransaction();
+
+        if (!transaction)
+        {
+            continue;
+        }
+
+        if (transaction->getFromAddress().value.high == address.value.high && 
+            transaction->getFromAddress().value.low == address.value.low)
+        {
+            if (transaction->getAmount() > balance)
+            {
+                balance = 0;
+            }
+            else
+            {
+                balance -= transaction->getAmount();
+            }
+        }
+
+        if (transaction->getToAddress().value.high == address.value.high && 
+            transaction->getToAddress().value.low == address.value.low)
+        {
+            balance += transaction->getAmount();
+        }
     }
 
-    return false;
+    return balance;
 }
+
+// Getters
+// ---
+
+std::size_t ChebyChain::Blockchain::getBlockCount() const { return chain.size(); }
+const ChebyChain::Block& ChebyChain::Blockchain::getBlock(std::size_t index) const { return chain.at(index); }
+
+// ---

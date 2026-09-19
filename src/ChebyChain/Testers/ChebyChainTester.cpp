@@ -8,6 +8,8 @@
 
 void ChebyChain::Testers::ChebyChainTester()
 {
+    CLIUtils::clearScreen();
+
     Blockchain blockchain;
     int choice;
     std::string data;
@@ -36,7 +38,7 @@ void ChebyChain::Testers::ChebyChainTester()
         }
 
         switch (choice) {
-        case 1:
+        case 1: // New block
         {
             CLIUtils::clearScreen();
 
@@ -51,7 +53,7 @@ void ChebyChain::Testers::ChebyChainTester()
 
             break;
         }
-        case 2: 
+        case 2: // Blocks count
         {            
             CLIUtils::clearScreen();
 
@@ -59,7 +61,7 @@ void ChebyChain::Testers::ChebyChainTester()
             
             break; 
         }
-        case 3:
+        case 3: // Block by index
         {
             CLIUtils::clearScreen();
 
@@ -85,7 +87,7 @@ void ChebyChain::Testers::ChebyChainTester()
 
             break; 
         }
-        case 4:
+        case 4: // Validate blockchain
         {
             CLIUtils::clearScreen();
 
@@ -99,7 +101,7 @@ void ChebyChain::Testers::ChebyChainTester()
 
             break;
         }
-        case 5:
+        case 5: // Save blockchain
         {
             CLIUtils::clearScreen();
 
@@ -112,7 +114,7 @@ void ChebyChain::Testers::ChebyChainTester()
             std::cout << "Blockchain saved!" << std::endl;
             break;
         }
-        case 6:
+        case 6: // Load blockchain
         {
             CLIUtils::clearScreen();
 
@@ -125,7 +127,7 @@ void ChebyChain::Testers::ChebyChainTester()
             std::cout << "Blockchain loaded" << std::endl;
             break;
         }
-        case 7:
+        case 7: // Transaction test
         {
             CLIUtils::clearScreen();
 
@@ -157,7 +159,7 @@ void ChebyChain::Testers::ChebyChainTester()
 
             break;
         }
-        case 8:
+        case 8: // Get transactions data
         {
             CLIUtils::clearScreen();
 
@@ -175,9 +177,7 @@ void ChebyChain::Testers::ChebyChainTester()
         }
         case 0:
             CLIUtils::clearScreen();
-
             run = false;
-
             break;
         }
     }

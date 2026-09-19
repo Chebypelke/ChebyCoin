@@ -8,6 +8,8 @@
 
 void ChebyHash::Testers::ChebyHash64Tester()
 {
+    CLIUtils::clearScreen();
+
     bool run = true;
     int choice = 0;
 
@@ -33,11 +35,11 @@ void ChebyHash::Testers::ChebyHash64Tester()
         }
 
         switch (choice) {
-        case 1:
+        case 1: // Avalache test
         {
             CLIUtils::clearScreen();
-            std::cout << "Type tests count: ";
 
+            std::cout << "Type tests count: ";
             if (!CLIUtils::readUInt32(TEST_COUNT)) 
             {
                 std::cout << "ERROR: type number!" << std::endl; 
@@ -88,8 +90,7 @@ void ChebyHash::Testers::ChebyHash64Tester()
 
             auto average = static_cast<double>(total) / (TEST_COUNT * INPUT_LENGTH * 8);
 
-            auto end = std::chrono::high_resolution_clock::now();
-                        
+            auto end = std::chrono::high_resolution_clock::now();       
             auto duration = std::chrono::duration<double>(end - start);
 
             std::cout << "Average: " << average << std::endl 
@@ -98,7 +99,7 @@ void ChebyHash::Testers::ChebyHash64Tester()
 
             break;
         }
-        case 2: 
+        case 2: // Determinism test
         {
             CLIUtils::clearScreen();
 
@@ -136,8 +137,7 @@ void ChebyHash::Testers::ChebyHash64Tester()
                 total += diff;
             } 
 
-            auto end = std::chrono::high_resolution_clock::now();
-                        
+            auto end = std::chrono::high_resolution_clock::now();         
             auto duration = std::chrono::duration<double>(end - start);
 
             if (total != 0)
@@ -154,11 +154,9 @@ void ChebyHash::Testers::ChebyHash64Tester()
             break; 
         }
         case 0:
-        {
+            CLIUtils::clearScreen();
             run = false;
             break;
-        }
-
         }
     }
 }

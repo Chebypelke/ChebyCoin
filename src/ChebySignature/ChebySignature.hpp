@@ -4,6 +4,13 @@
 
 #include <cstdint>
 
+// WARNING:
+// Experimental educational toy-rsa.
+// NOT cryptographically secure.
+// Do not use for real passwords, signatures,
+// authentication, key derivation, or secure storage.
+// Created on Hash128
+
 namespace ChebySignature
 {
     using Hash128 = ChebyHash::ChebyHash128::Hash128;

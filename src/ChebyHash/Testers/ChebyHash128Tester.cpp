@@ -8,6 +8,8 @@
 
 void ChebyHash::Testers::ChebyHash128Tester()
 {
+    CLIUtils::clearScreen();
+
     bool run = true;
     int choice = 0;
 
@@ -36,8 +38,8 @@ void ChebyHash::Testers::ChebyHash128Tester()
         case 1:
         {
             CLIUtils::clearScreen();
-            std::cout << "Type tests count: ";
 
+            std::cout << "Type tests count: ";
             if (!CLIUtils::readUInt32(TEST_COUNT)) 
             {
                 std::cout << "ERROR: type number!" << std::endl; 
@@ -136,8 +138,7 @@ void ChebyHash::Testers::ChebyHash128Tester()
                 total += diff;
             } 
 
-            auto end = std::chrono::high_resolution_clock::now();
-                        
+            auto end = std::chrono::high_resolution_clock::now();      
             auto duration = std::chrono::duration<double>(end - start);
 
             if (total != 0)
@@ -154,11 +155,9 @@ void ChebyHash::Testers::ChebyHash128Tester()
             break; 
         }
         case 0:
-        {
+            CLIUtils::clearScreen();
             run = false;
             break;
-        }
-
         }
     }
 }
