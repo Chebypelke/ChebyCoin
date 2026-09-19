@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(ChebyCoin)
+project(ChebyCoin LANGUAGES CXX)
+
+# main-app - main chebycoin client app
 
 add_executable(main-app
     # ChebyHash
@@ -30,12 +32,17 @@ add_executable(main-app
     src/main.cpp
 )
 
+# Testers(only tester and dependencies)
+# ChebyHash32 Tester - only chebyhash32 tester binary
+
 add_executable(chebyhash32-tester
     src/ChebyHash/ChebyHash32.cpp
     src/Utils/Utils.cpp
     src/Utils/RandomGenerators.cpp
     src/ChebyHash/Testers/ChebyHash32Tester.cpp
 )
+
+# ChebyHash64 Tester - only chebyhash64 tester binary
 
 add_executable(chebyhash64-tester
     src/Utils/Utils.cpp 
@@ -44,6 +51,8 @@ add_executable(chebyhash64-tester
     src/ChebyHash/Testers/ChebyHash64Tester.cpp
 )
 
+# ChebyHash128 Tester - only chebyhash128 tester binary
+
 add_executable(chebyhash128-tester
     src/Utils/Utils.cpp 
     src/Utils/RandomGenerators.cpp 
@@ -51,6 +60,7 @@ add_executable(chebyhash128-tester
     src/ChebyHash/ChebyHash128/Hash128.cpp 
     src/ChebyHash/Testers/ChebyHash128Tester.cpp
 )
+# ChebyChain Tester - only chain tester binary
 
 add_executable(chebychain-tester
     src/Utils/Utils.cpp 
@@ -67,6 +77,8 @@ add_executable(chebychain-tester
     src/ChebyChain/Testers/ChebyChainTester.cpp
 )
 
+# ChebySignature Tester - only chain tester binary
+
 add_executable(chebysignature-tester
     src/Utils/Utils.cpp 
     src/Utils/RandomGenerators.cpp 
@@ -75,6 +87,8 @@ add_executable(chebysignature-tester
     src/ChebySignature/ChebySignature.cpp 
     src/ChebySignature/Testers/ChebySignatureTester.cpp
 )
+
+# ChebyWallet Tester - only wallet tester binary
 
 add_executable(chebywallet-tester
     src/Utils/Utils.cpp 
