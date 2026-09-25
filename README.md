@@ -4,73 +4,28 @@
 
 An experimental cryptocurrency and blockchain project written in C++.
 
-The project is developed for educational purposes and focuses on learning C++, hashing algorithms, 128-bit arithmetic, digital signatures, blockchain architecture, and secure programming concepts.
+The project was created for educational purposes to study C++, hashing algorithms, 128-bit arithmetic, digital signatures, blockchain architecture, and safe programming principles.
 
-The project uses components developed as part of its development, including ChebyHash, ChebySignature, and others.
+It utilizes custom components built during development (ChebyHash, ChebySignature, etc.).
 
 ## Features
 
 - ChebyHash32|64|128
 - String hashing API
-- Custom 128-bit Hash128 type
+- Custom 128-bit `Hash128` type
 - 128-bit arithmetic
 - Avalanche effect testing
 - ChebyChain
 - Block structure
 - Genesis Block
-- Block linking through previous hashes
+- Block linking via previous hashes
 - Blockchain integrity verification
 - ChebySignature
-- RSA-style key generation
-- Digital signature generation
+- RSA-like key generation
+- Digital signature creation
 - Digital signature verification
 
-## ChebyHash
-
-ChebyHash is an experimental hashing algorithm developed for ChebyCoin.
-
-The project currently supports 32-, 64-, and 128-bit hash versions.
-
-ChebyHash128 uses a custom Hash128 structure consisting of two 64-bit values:
-
-- high
-- low
-
-128-bit arithmetic is implemented using these two 64-bit values.
-
-### Hash128 Operations
-
-ChebyHash128 provides operations including:
-
-- Addition
-- Subtraction
-- XOR
-- Comparison
-- Multiplication
-- Division
-- Modulo
-- Bit shifting
-- Bit rotation
-- Modular addition
-- Modular multiplication
-
-These operations are used by higher-level ChebyCoin components.
-
-### Avalanche Effect
-
-ChebyHash implementations are tested using avalanche testing.
-
-The test changes a single input bit and measures how many output bits change.
-
-| Algorithm    | Hash size | Average changed bits |
-| ------------ | --------- | -------------------- |
-| ChebyHash32  | 32 bits   | ~16                  |
-| ChebyHash64  | 64 bits   | ~32                  |
-| ChebyHash128 | 128 bits  | 63.979               |
-
-With an ideal avalanche effect, changing one input bit should change approximately half of the output bits.
-
-ChebyHash128 was tested using 500,000 random inputs.
+## [ChebyHash](docs/EN/ChebyHash_en.md)
 
 ## ChebyChain
 
@@ -83,82 +38,83 @@ Each block contains information about the previous block and its own hash.
 - Block structure
 - Genesis Block
 - Blockchain container
-- Block linking through previous hashes
+- Block linking via previous hashes
 - Automatic block hash calculation
 - Blockchain integrity verification
 - Block access API
-- Block count API
+- Retrieving block count
 
 ## ChebySignature
 
-ChebySignature is an experimental digital signature component built on top of the custom Hash128 arithmetic.
+ChebySignature is an experimental digital signature component built on top of the custom 128-bit `Hash128` arithmetic.
 
-It currently implements an educational RSA-style signing scheme.
+The current version implements an educational RSA-like digital signature scheme.
 
 ### Implemented
 
-- RSA-style key pair generation
-- Public and private keys
+- RSA-like key pair generation
+- Public key
+- Private key
 - Modular inverse calculation
 - Modular exponentiation
-- Digital signature generation
+- Digital signature creation
 - Digital signature verification
-- Signature verification tests
+- Signature verification testing
 
 The current implementation uses the public exponent e = 65537.
 
-The private exponent is calculated as the modular inverse of e modulo Euler's totient:
+The private exponent is calculated as the modular inverse of e modulo Euler's totient function:
 
 d = e⁻¹ mod φ
 
-The signing process calculates:
+Signature creation is performed using the formula:
 
 signature = hash^d mod n
 
-Verification calculates:
+Signature verification is performed using the formula:
 
 verified = signature^e mod n
 
-The implementation successfully verifies that the recovered hash matches the original hash.
+The implementation successfully verifies that the recovered hash matches the original one.
 
-### Important
+### Important Notice
 
 ChebySignature is an educational implementation.
 
-It is not cryptographically secure and must not be used for real authentication, digital signatures, cryptocurrencies, financial systems, or secure communications.
+It is **not** cryptographically secure and is not intended for use in production authentication systems, digital signatures, cryptocurrencies, financial systems, or secure communications.
 
-It currently does not implement production cryptographic standards such as RSA-PSS, PKCS#1 v1.5, secure padding, or cryptographically secure key generation.
+The current implementation does not use industry cryptographic standards such as RSA-PSS, PKCS#1 v1.5, secure padding schemes, or cryptographically secure key generation.
 
 ## Testers
 
-Testers provide a way to experiment with implemented ChebyCoin components.
+The interactive testers allow you to experiment with the implemented ChebyCoin components.
 
 ### ChebyHash32|64|128 Tester
 
 - Random string generation
 - Hashing tests
-- Avalanche testing
-- Average changed bit measurement
+- Avalanche effect testing
+- Measurement of the average number of flipped bits
 - Execution time measurement
 
 ### ChebyChain Tester
 
-- Creating new blocks
-- Viewing blockchain size
-- Viewing blocks by index
-- Displaying hashes in decimal and hexadecimal format
+- Creation of new blocks
+- Viewing the block count
+- Inspecting blocks by index
+- Displaying hashes in decimal and HEX formats
 - Blockchain integrity verification
-- Console interface
+- Console UI
 
 ### ChebySignature Tester
 
-- RSA-style key generation
+- RSA-like key pair generation
 - Message hash signing
-- Signature verification
-- Original and recovered hash comparison
-- PASS/FAIL verification output
+- Digital signature verification
+- Comparison of original and recovered hash
+- PASS/FAIL result output
 
-## Build
+## Building
 
 1. Clone the repository:
 
@@ -176,56 +132,47 @@ cmake --build build
 
 ## Project Status
 
-Current version: v0.0.4
+Current version: v0.0.6
 
 ### Implemented
 
 - [x] ChebyHash32
 - [x] ChebyHash64
-- [x] ChebyHash128
-- [x] String hashing
-- [x] Avalanche testing
-- [x] Hash testers
 - [x] Hash128 arithmetic
+- [x] ChebyHash128
 - [x] Block structure
-- [x] Genesis Block
 - [x] Blockchain
-- [x] Block linking
 - [x] Blockchain integrity verification
-- [x] Blockchain testers
-- [x] First ChebyHash release
-- [x] First ChebyChain release
-- [x] First ChebyHash128 release
-- [x] ChebySignature
-- [x] RSA-style key generation
-- [x] Digital signature generation
+- [x] ChebyChain
+- [x] RSA-like key generation
+- [x] Digital signature creation
 - [x] Digital signature verification
-- [x] First ChebySignature release
+- [x] ChebySignature
 - [x] Wallets
+- [x] Transactions
 
 ### Planned
 
-- [ ] Transactions
 - [ ] Mining
 - [ ] Proof-of-Work
-- [ ] Network layer
+- [ ] Networking layer
 - [ ] Transaction signing
 - [ ] Secure key storage
 - [ ] Persistent blockchain storage
 
 ## License
 
-This project is distributed under the MIT License.
+Distributed under the MIT License.
 
-See the LICENSE file for details.
+See `LICENSE` for more information.
 
 ## Disclaimer
 
 ChebyCoin is an experimental educational project.
 
-ChebyHash, ChebyChain, and ChebySignature are not intended for use in real financial, cryptographic, authentication, or security systems.
+ChebyHash, ChebyChain, and ChebySignature are **not** intended for use in real financial, cryptographic, authentication, or security systems.
 
-The project is developed for educational purposes and is intended to explore:
+This project was created purely for educational purposes to study:
 
 - C++
 - Algorithms
@@ -235,4 +182,4 @@ The project is developed for educational purposes and is intended to explore:
 - Digital signatures
 - Blockchain architecture
 - Cryptographic concepts
-- Secure programming
+- Safe programming
