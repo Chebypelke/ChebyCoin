@@ -99,4 +99,5 @@ add_executable(chebywallet-tester
     src/ChebySignature/ChebySignature.cpp 
     src/ChebyWallet/ChebyWallet.cpp
     src/ChebyWallet/Testers/ChebyWalletTester.cpp
+    src/Transactions/Transactions.cpp
 )

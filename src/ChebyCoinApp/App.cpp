@@ -97,7 +97,7 @@ void ChebyCoinApp::App::runWalletMenu()
             ChebySignature::Hash128 signature = ChebySignature::Signature::sign(messageHash, privateKey);
             ChebySignature::Hash128 verified = ChebySignature::Signature::verify(signature, publicKey);
 
-            auto expected = ChebyHash::ChebyHash128::mod(messageHash, publicKey.modulus);
+            auto expected = messageHash % publicKey.modulus;
 
             bool valid = verified.high == expected.high && verified.low == expected.low;
 

@@ -8,7 +8,7 @@ ChebySignature::Hash128 ChebySignature::Signature::modularPower(
 {
     Hash128 result{0, 1};
 
-    base = ChebyHash::ChebyHash128::mod(base, modulus);
+    base = base % modulus;
 
     while (!ChebyHash::ChebyHash128::isZero(exponent))
     {
@@ -36,12 +36,14 @@ ChebySignature::Hash128 ChebySignature::Signature::modularPower(
 
 ChebySignature::Hash128 ChebySignature::Signature::modularInverse(const Hash128& value, const Hash128& modulus)
 {
+    
+
     if (ChebyHash::ChebyHash128::isZero(modulus))
     {
         return Hash128{0, 0};
     }
 
-    Hash128 valueMod = ChebyHash::ChebyHash128::mod(value, modulus);
+    Hash128 valueMod = value % modulus;
 
     if (ChebyHash::ChebyHash128::isZero(valueMod))
     {
@@ -55,14 +57,8 @@ ChebySignature::Hash128 ChebySignature::Signature::modularInverse(const Hash128&
 
     constexpr std::uint64_t e = 65537;
 
-    ChebyHash::ChebyHash128::DivisionResult division =
-        ChebyHash::ChebyHash128::divide(
-            modulus,
-            Hash128{0, e}
-        );
-
-    Hash128 quotient = division.quotient;
-    Hash128 remainder = division.remainder;
+    Hash128 quotient = modulus / Hash128{0, e};
+    Hash128 remainder = modulus % Hash128{0, e};
 
     if (ChebyHash::ChebyHash128::isZero(remainder))
     {
@@ -88,19 +84,11 @@ ChebySignature::Hash128 ChebySignature::Signature::modularInverse(const Hash128&
         return Hash128{0, 0};
     }
 
-    Hash128 firstPart =
-        ChebyHash::ChebyHash128::multiply(
-            quotient,
-            Hash128{0, k}
-        );
+    Hash128 firstPart = quotient * Hash128{0, k};
 
     std::uint64_t secondPart = (k * r + 1) / e;
 
-    Hash128 result =
-        ChebyHash::ChebyHash128::add(
-            firstPart,
-            Hash128{0, secondPart}
-        );
+    Hash128 result = firstPart + Hash128{0, secondPart};
 
     Hash128 check =
         ChebyHash::ChebyHash128::multiplyMod(
@@ -152,7 +140,7 @@ ChebySignature::KeyPair ChebySignature::Signature::generateKeyPair()
     while (true)
     {
         std::uint64_t p = generatePrime();
-        std::uint64_t q = generatePrime();  
+        std::uint64_t q = generatePrime();
 
         while (p == q)
         {
@@ -162,12 +150,12 @@ ChebySignature::KeyPair ChebySignature::Signature::generateKeyPair()
         Hash128 pHash{0, p};
         Hash128 qHash{0, q};    
 
-        Hash128 modulus = ChebyHash::ChebyHash128::multiply(pHash, qHash);
+        Hash128 modulus = pHash * qHash;
 
-        Hash128 pMinusOne = ChebyHash::ChebyHash128::subtract(pHash, Hash128{0, 1});
-        Hash128 qMinusOne = ChebyHash::ChebyHash128::subtract(qHash, Hash128{0, 1});
+        Hash128 pMinusOne = pHash - Hash128{0, 1};
+        Hash128 qMinusOne = qHash - Hash128{0, 1};
 
-        Hash128 phi = ChebyHash::ChebyHash128::multiply(pMinusOne, qMinusOne);
+        Hash128 phi = pMinusOne * qMinusOne;
 
         Hash128 publicExponent{0, 65537};
         Hash128 privateExponent = modularInverse(publicExponent, phi);

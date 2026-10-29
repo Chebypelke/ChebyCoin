@@ -55,7 +55,7 @@ void Transaction::sign(const ChebySignature::KeyPair& keyPair)
 bool Transaction::verifySignature() const
 {
     ChebyHash::ChebyHash128::Hash128 signingDataHash = ChebyHash::ChebyHash128::hash(getSigningData());
-    signingDataHash = ChebyHash::ChebyHash128::mod(signingDataHash, publicKey.modulus);
+    signingDataHash = signingDataHash % publicKey.modulus;
 
     ChebySignature::Hash128 messageHash = ChebySignature::Signature::verify(signature, publicKey);
 

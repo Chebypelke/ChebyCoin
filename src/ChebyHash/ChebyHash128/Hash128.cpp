@@ -2,36 +2,6 @@
 #include <cstdint>
 #include <utility>
 
-ChebyHash::ChebyHash128::Hash128 ChebyHash::ChebyHash128::add(const Hash128& valueOne, const Hash128& valueTwo)
-{
-    std::uint64_t low = valueOne.low + valueTwo.low;
-
-    bool carry = low < valueOne.low;
-
-    std::uint64_t high = valueOne.high + valueTwo.high + carry;
-
-    return Hash128{high, low};
-}
-
-ChebyHash::ChebyHash128::Hash128 ChebyHash::ChebyHash128::xorValues(const Hash128& valueOne, const Hash128& valueTwo)
-{
-    std::uint64_t high = valueOne.high ^ valueTwo.high;
-    std::uint64_t low = valueOne.low ^ valueTwo.low;
-
-    return Hash128{high, low};
-}   
-
-ChebyHash::ChebyHash128::Hash128 ChebyHash::ChebyHash128::subtract(const Hash128& valueOne, const Hash128& valueTwo)
-{
-    std::uint64_t low = valueOne.low - valueTwo.low;
-
-    bool borrow = low > valueOne.low;
-
-    std::uint64_t high = valueOne.high - valueTwo.high - borrow;
-
-    return Hash128{high, low};
-}  
-
 bool ChebyHash::ChebyHash128::lessThan(const Hash128& valueOne, const Hash128& valueTwo)
 {
     if (valueOne.high < valueTwo.high)
@@ -59,7 +29,7 @@ ChebyHash::ChebyHash128::SignedHash128 ChebyHash::ChebyHash128::subtractSigned(
 {
     if (isZero(valueOne))
     {
-        return SignedHash128{valueTwo, valueTwoNegative && !isZero(valueTwo)};
+        return SignedHash128{valueTwo, !valueTwoNegative && !isZero(valueTwo)};
     }
 
     if (isZero(valueTwo))
@@ -69,19 +39,19 @@ ChebyHash::ChebyHash128::SignedHash128 ChebyHash::ChebyHash128::subtractSigned(
 
     if (valueOneNegative != valueTwoNegative)
     {
-        Hash128 value = add(valueOne, valueTwo);
+        Hash128 value = valueOne + valueTwo;
 
         return SignedHash128{value, valueOneNegative};
     }
 
     if (lessThan(valueOne, valueTwo))
     {
-        Hash128 value = subtract(valueTwo, valueOne);
+        Hash128 value = valueTwo - valueOne;
 
         return SignedHash128{value, !valueOneNegative};
     }
 
-    Hash128 value = subtract(valueOne, valueTwo);
+    Hash128 value = valueOne - valueTwo;
 
     if (isZero(value))
     {
@@ -91,16 +61,62 @@ ChebyHash::ChebyHash128::SignedHash128 ChebyHash::ChebyHash128::subtractSigned(
     return SignedHash128{value, valueOneNegative};
 }
 
-ChebyHash::ChebyHash128::Hash128 ChebyHash::ChebyHash128::multiply(const Hash128& valueOne, const Hash128& valueTwo)
+ChebyHash::ChebyHash128::Hash128 
+ChebyHash::ChebyHash128::Hash128::operator+(const Hash128& valueTwo) const
 {
-    unsigned __int128 lowProduct = static_cast<unsigned __int128>(valueOne.low) * valueTwo.low;
+    std::uint64_t low = this->low + valueTwo.low;
 
-    std::uint64_t low = static_cast<std::uint64_t>(lowProduct);
+    bool carry = low < this->low;
 
-    std::uint64_t high = static_cast<std::uint64_t>(lowProduct >> 64);
+    std::uint64_t high = this->high + valueTwo.high + carry;
 
-    high += valueOne.high * valueTwo.low;
-    high += valueOne.low * valueTwo.high;
+    return Hash128{high, low};
+}
+
+ChebyHash::ChebyHash128::Hash128 
+ChebyHash::ChebyHash128::Hash128::operator-(const Hash128& valueTwo) const
+{
+    std::uint64_t low = this->low - valueTwo.low;
+
+    bool borrow = low > this->low;
+
+    std::uint64_t high = this->high - valueTwo.high - borrow;
+
+    return Hash128{high, low};
+}
+
+ChebyHash::ChebyHash128::Hash128 
+ChebyHash::ChebyHash128::Hash128::operator*(const Hash128& valueTwo) const
+{
+    unsigned __int128 lowProduct = static_cast<unsigned __int128>(low) * valueTwo.low;
+
+    std::uint64_t resultLow = static_cast<std::uint64_t>(lowProduct);
+
+    std::uint64_t resultHigh = static_cast<std::uint64_t>(lowProduct >> 64);
+
+    resultHigh += high * valueTwo.low;
+    resultHigh += low * valueTwo.high;
+
+    return Hash128{resultHigh, resultLow};
+}
+
+ChebyHash::ChebyHash128::Hash128 
+ChebyHash::ChebyHash128::Hash128::operator/(const Hash128& divisor) const
+{
+    return divide(*this, divisor).quotient;
+}
+
+ChebyHash::ChebyHash128::Hash128 
+ChebyHash::ChebyHash128::Hash128::operator%(const Hash128& divisor) const
+{
+    return divide(*this, divisor).remainder;
+}
+
+ChebyHash::ChebyHash128::Hash128
+ChebyHash::ChebyHash128::Hash128::operator^(const Hash128& valueTwo) const
+{
+    std::uint64_t high = this->high ^ valueTwo.high;
+    std::uint64_t low = this->low ^ valueTwo.low;
 
     return Hash128{high, low};
 }
@@ -171,7 +187,7 @@ ChebyHash::ChebyHash128::DivisionResult ChebyHash::ChebyHash128::divide(const Ha
 
         if (!lessThan(remainder, divisor))
         {
-            remainder = subtract(remainder, divisor);
+            remainder = remainder - divisor;
 
             if (bit >= 64)
             {
@@ -185,11 +201,6 @@ ChebyHash::ChebyHash128::DivisionResult ChebyHash::ChebyHash128::divide(const Ha
     }
 
     return DivisionResult{quotient, remainder};
-}
-
-ChebyHash::ChebyHash128::Hash128 ChebyHash::ChebyHash128::mod(const Hash128& value, const Hash128& divisor)
-{
-    return divide(value, divisor).remainder;
 }
 
 ChebyHash::ChebyHash128::Hash128 ChebyHash::ChebyHash128::rotl(const Hash128& value, unsigned int shift)
@@ -255,7 +266,7 @@ ChebyHash::ChebyHash128::Hash128 ChebyHash::ChebyHash128::multiplyMod(
 
     Hash128 result{0, 0};
 
-    Hash128 value = mod(valueOne, modulus);
+    Hash128 value = valueOne % modulus;
     Hash128 multiplier = valueTwo;
 
     while (!isZero(multiplier))
@@ -282,15 +293,15 @@ ChebyHash::ChebyHash128::Hash128 ChebyHash::ChebyHash128::addMod(
         return Hash128{0, 0};
     }
 
-    Hash128 aMod = mod(valueOne, modulus);
-    Hash128 bMod = mod(valueTwo, modulus);
+    Hash128 aMod = valueOne % modulus;
+    Hash128 bMod = valueTwo % modulus;
     
-    Hash128 mMinusB = subtract(modulus, bMod);
+    Hash128 mMinusB = modulus - bMod;
 
     if (!lessThan(aMod, mMinusB))
     {
-        return subtract(aMod, mMinusB);
+        return aMod - mMinusB;
     }
 
-    return add(aMod, bMod);
+    return aMod + bMod;
 }

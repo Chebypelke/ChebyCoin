@@ -36,6 +36,13 @@ namespace ChebyHash
         {
             std::uint64_t high;
             std::uint64_t low;
+
+            Hash128 operator+(const Hash128& valueTwo) const;
+            Hash128 operator-(const Hash128& valueTwo) const;
+            Hash128 operator*(const Hash128& valueTwo) const;
+            Hash128 operator/(const Hash128& divisor) const;
+            Hash128 operator%(const Hash128& divisor) const;
+            Hash128 operator^(const Hash128& valueTwo) const;
         };
 
         struct SignedHash128
@@ -50,19 +57,15 @@ namespace ChebyHash
             Hash128 remainder;
         };
 
-        static Hash128 add(const Hash128& valueOne, const Hash128& valueTwo);
-        static Hash128 xorValues(const Hash128& valueOne, const Hash128& valueTwo);
-        static Hash128 subtract(const Hash128& valueOne, const Hash128& valueTwo);
         static bool lessThan(const Hash128& valueOne, const Hash128& valueTwo);
         static bool isZero(const Hash128& value);
         static SignedHash128 subtractSigned(
             const Hash128& valueOne, bool valueOneNegative, const Hash128& valueTwo, bool valueTwoNegative
         );
-        static Hash128 multiply(const Hash128& valueOne, const Hash128& valueTwo);
+        
         static Hash128 shiftLeft(const Hash128& value, unsigned int shift);
         static Hash128 shiftRight(const Hash128& value, unsigned int shift);
         static DivisionResult divide(const Hash128& value, const Hash128& divisor);
-        static Hash128 mod(const Hash128& value, const Hash128& divisor);
         static Hash128 rotl(const Hash128& value, unsigned int shift);
         static Hash128 rotr(const Hash128& value, unsigned int shift);
         static Hash128 multiplyMod(const Hash128& valueOne, const Hash128& valueTwo, const Hash128& modulus);

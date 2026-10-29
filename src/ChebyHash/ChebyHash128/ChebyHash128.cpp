@@ -7,14 +7,14 @@ constexpr auto ROUND_COUNT = 32;
 
 void ChebyHash::ChebyHash128::round(Hash128& x, Hash128& y)
 {
-    y = add(y, x);
-    x = xorValues(x, y);
+    y = y + x;
+    x = x ^ y;
     
     y = rotr(y, 13);
     x = rotl(x, 17);
 
-    y = xorValues(y, x);
-    x = add(x, y);
+    y = y ^ x;
+    x = x + y;
 }
 
 ChebyHash::ChebyHash128::Hash128 ChebyHash::ChebyHash128::mix(Hash128 x, Hash128 y)
