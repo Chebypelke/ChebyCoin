@@ -4,29 +4,52 @@
 
 #include <cstdint>
 
-// WARNING:
-// Experimental educational toy-rsa.
-// NOT cryptographically secure.
-// Do not use for real passwords, signatures,
-// authentication, key derivation, or secure storage.
-// Created on Hash128
+/**
+ * @defgroup ChebySignature ChebySignature
+ * @brief Experimental toy-rsa library.
+ *
+ * @warning
+ * ChebySignature is NOT cryptographically secure.
+ * Do not use it for passwords, authentication,
+ * digital signatures or key derivation.
+ */
 
 namespace ChebySignature
 {
-    using Hash128 = ChebyHash::ChebyHash128::Hash128;
+    constexpr std::uint64_t e = 65537;
 
+    using Hash128 = ChebyHash::ChebyHash128::Hash128;
+    
+    /**
+    * @brief Public key.
+    *
+    * @param modulus         Product of two large prime numbers (p and q).
+    * @param publicExponent  Public exponent (e), commonly set to 65537. Used in RSA encryption and digital signature verification.
+    */
     struct PublicKey
     {
         Hash128 modulus;
         Hash128 publicExponent;
     };
 
+    /**
+     * @brief Private key.
+     *
+     * @param modulus          Product of two large, secret prime numbers(p and q)
+     * @param privateExponent  Private exponent (d), computed as the modular inverse of the public exponent (e) modulo Euler's totient φ(n).
+     */
     struct PrivateKey
     {
         Hash128 modulus;
         Hash128 privateExponent;
     };
 
+    /**
+    * @brief Cryptographic key pair containing mathematically related public and private keys.
+    *
+    * @param publicKey   Public key used for encryption and digital signature verification.
+    * @param privateKey  Private key used for decryption and digital signing.
+    */
     struct KeyPair
     {
         PublicKey publicKey;
