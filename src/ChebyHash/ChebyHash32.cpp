@@ -3,8 +3,6 @@
 #include <cstdint>
 #include <string_view>
 
-constexpr auto ROUND_COUNT = 32;
-
 void ChebyHash::ChebyHash32::round(std::uint32_t& x, std::uint32_t& y)
 {
     y += x;

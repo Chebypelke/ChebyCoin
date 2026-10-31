@@ -121,7 +121,8 @@ ChebyHash::ChebyHash128::Hash128::operator^(const Hash128& valueTwo) const
     return Hash128{high, low};
 }
 
-ChebyHash::ChebyHash128::Hash128 ChebyHash::ChebyHash128::shiftLeft(const Hash128& value, unsigned int shift)
+ChebyHash::ChebyHash128::Hash128 
+ChebyHash::ChebyHash128::shiftLeft(const Hash128& value, unsigned int shift)
 {
     if (shift >= 128)
     {
@@ -142,7 +143,8 @@ ChebyHash::ChebyHash128::Hash128 ChebyHash::ChebyHash128::shiftLeft(const Hash12
 
 }
 
-ChebyHash::ChebyHash128::Hash128 ChebyHash::ChebyHash128::shiftRight(const Hash128& value, unsigned int shift)
+ChebyHash::ChebyHash128::Hash128 
+ChebyHash::ChebyHash128::shiftRight(const Hash128& value, unsigned int shift)
 {
     if (shift >= 128)
     {
@@ -162,7 +164,8 @@ ChebyHash::ChebyHash128::Hash128 ChebyHash::ChebyHash128::shiftRight(const Hash1
     return Hash128{0, value.high >> (shift - 64)};
 }
 
-ChebyHash::ChebyHash128::DivisionResult ChebyHash::ChebyHash128::divide(const Hash128& value, const Hash128& divisor)
+ChebyHash::ChebyHash128::DivisionResult 
+ChebyHash::ChebyHash128::divide(const Hash128& value, const Hash128& divisor)
 {
     if (isZero(divisor))
     {
@@ -203,7 +206,8 @@ ChebyHash::ChebyHash128::DivisionResult ChebyHash::ChebyHash128::divide(const Ha
     return DivisionResult{quotient, remainder};
 }
 
-ChebyHash::ChebyHash128::Hash128 ChebyHash::ChebyHash128::rotl(const Hash128& value, unsigned int shift)
+ChebyHash::ChebyHash128::Hash128 
+ChebyHash::ChebyHash128::rotl(const Hash128& value, unsigned int shift)
 {
     Hash128 result = value;
     shift %= 128;
@@ -229,7 +233,8 @@ ChebyHash::ChebyHash128::Hash128 ChebyHash::ChebyHash128::rotl(const Hash128& va
     return Hash128{newHigh, newLow};
 }
 
-ChebyHash::ChebyHash128::Hash128 ChebyHash::ChebyHash128::rotr(const Hash128& value, unsigned int shift)
+ChebyHash::ChebyHash128::Hash128 
+ChebyHash::ChebyHash128::rotr(const Hash128& value, unsigned int shift)
 {
     Hash128 result = value;
     shift %= 128;
@@ -255,7 +260,8 @@ ChebyHash::ChebyHash128::Hash128 ChebyHash::ChebyHash128::rotr(const Hash128& va
     return Hash128{newHigh, newLow};
 }
 
-ChebyHash::ChebyHash128::Hash128 ChebyHash::ChebyHash128::multiplyMod(
+ChebyHash::ChebyHash128::Hash128 
+ChebyHash::ChebyHash128::multiplyMod(
     const Hash128& valueOne, const Hash128& valueTwo, const Hash128& modulus
 )
 {
@@ -284,7 +290,8 @@ ChebyHash::ChebyHash128::Hash128 ChebyHash::ChebyHash128::multiplyMod(
     return result;
 }
 
-ChebyHash::ChebyHash128::Hash128 ChebyHash::ChebyHash128::addMod(
+ChebyHash::ChebyHash128::Hash128 
+ChebyHash::ChebyHash128::addMod(
     const Hash128& valueOne, const Hash128& valueTwo, const Hash128& modulus
 )
 {

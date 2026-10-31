@@ -2,8 +2,6 @@
 #include <bit>
 #include <cstdint>
 
-constexpr auto ROUND_COUNT = 32;
-
 void ChebyHash::ChebyHash64::round(std::uint64_t& x, std::uint64_t& y)
 {
     y += x;

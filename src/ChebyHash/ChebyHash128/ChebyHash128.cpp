@@ -3,8 +3,6 @@
 #include <bit>
 #include <cstdint>
 
-constexpr auto ROUND_COUNT = 32;
-
 void ChebyHash::ChebyHash128::round(Hash128& x, Hash128& y)
 {
     y = y + x;
