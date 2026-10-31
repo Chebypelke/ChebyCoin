@@ -15,9 +15,9 @@ void ChebyHash::Testers::ChebyHash64Tester()
 
     uint64_t last_hash = 0;
 
-    std::uint32_t TEST_COUNT = 0;
-    constexpr std::uint32_t DETERMINISM_TEST_COUNT = 10'000;
-    constexpr std::size_t INPUT_LENGTH = 16;
+    std::uint32_t avalache_test_count = 0;
+    std::uint32_t determinism_test_count = 0;
+    std::size_t input_length = 0;
 
     while (run)
     {
@@ -40,7 +40,14 @@ void ChebyHash::Testers::ChebyHash64Tester()
             CLIUtils::clearScreen();
 
             std::cout << "Type tests count: ";
-            if (!CLIUtils::readUInt32(TEST_COUNT)) 
+            if (!CLIUtils::readUInt32(avalache_test_count)) 
+            {
+                std::cout << "ERROR: type number!" << std::endl; 
+                break;
+	        }
+            
+            std::cout << "Type input length: ";
+            if (!CLIUtils::readSizeT(input_length)) 
             {
                 std::cout << "ERROR: type number!" << std::endl; 
                 break;
@@ -48,11 +55,11 @@ void ChebyHash::Testers::ChebyHash64Tester()
 
             auto start = std::chrono::high_resolution_clock::now();
             auto attempt_start = std::chrono::high_resolution_clock::now();
-            std::uint32_t progressStep = std::max<std::uint32_t>(1, TEST_COUNT / 10);
+            std::uint32_t progressStep = std::max<std::uint32_t>(1, avalache_test_count / 10);
 
             auto total = std::uint64_t{0};
 
-            for (std::uint32_t y = 0; y < TEST_COUNT; ++y)
+            for (std::uint32_t y = 0; y < avalache_test_count; ++y)
             {
                 if ((y + 1) % progressStep == 0)
                 {
@@ -60,13 +67,13 @@ void ChebyHash::Testers::ChebyHash64Tester()
                     
                     auto attempt_duration = std::chrono::duration<double>(attempt_end - attempt_start);
 
-                    std::cout << "Attempt: " << y+1 << "," 
+                    std::cout << "Attempt: " << std::dec << y+1 << "," 
                               << " duration: " << attempt_duration.count() << "s." << std::endl;
 
                     attempt_start = attempt_end;
                 }
                 
-                auto inputA = RandomStringGenerator(INPUT_LENGTH);
+                auto inputA = RandomStringGenerator(input_length);
                 auto inputB = inputA;
 
                 for (std::size_t bit = 0; bit < inputA.size() * 8; ++bit)
@@ -88,7 +95,7 @@ void ChebyHash::Testers::ChebyHash64Tester()
                 } 
             }
 
-            auto average = static_cast<double>(total) / (TEST_COUNT * INPUT_LENGTH * 8);
+            auto average = static_cast<double>(total) / (avalache_test_count * input_length * 8);
 
             auto end = std::chrono::high_resolution_clock::now();       
             auto duration = std::chrono::duration<double>(end - start);
@@ -103,27 +110,40 @@ void ChebyHash::Testers::ChebyHash64Tester()
         {
             CLIUtils::clearScreen();
 
+            std::cout << "Type tests count: ";
+            if (!CLIUtils::readUInt32(determinism_test_count)) 
+            {
+                std::cout << "ERROR: type number!" << std::endl; 
+                break;
+	        }
+            
+            std::cout << "Type input length: ";
+            if (!CLIUtils::readSizeT(input_length)) 
+            {
+                std::cout << "ERROR: type number!" << std::endl; 
+                break;
+	        }
+
             auto start = std::chrono::high_resolution_clock::now();
             auto attempt_start = std::chrono::high_resolution_clock::now();
-            std::uint32_t progressStep = std::max<std::uint32_t>(1, DETERMINISM_TEST_COUNT / 10);
+            std::uint32_t progressStep = std::max<std::uint32_t>(1, determinism_test_count / 10);
 
-            auto inputA = RandomStringGenerator(INPUT_LENGTH);
+            auto inputA = RandomStringGenerator(input_length);
             auto inputB = inputA;
 
             auto total = std::uint64_t{0};
 
-            for (std::uint32_t y = 0; y < DETERMINISM_TEST_COUNT; ++y)
+            for (std::uint32_t y = 0; y < determinism_test_count; ++y)
             {
                 if ((y + 1) % progressStep == 0)
                 {
-                    inputA = RandomStringGenerator(INPUT_LENGTH);
+                    inputA = RandomStringGenerator(input_length);
                     inputB = inputA;
 
                     auto attempt_end = std::chrono::high_resolution_clock::now();
-                    
                     auto attempt_duration = std::chrono::duration<double>(attempt_end - attempt_start);
 
-                    std::cout << "Attempt: " << y + 1 << "," 
+                    std::cout << "Attempt: " << std::dec << y + 1 << "," 
                               << " duration: " << attempt_duration.count() << "s." << std::endl;
 
                     attempt_start = attempt_end;
