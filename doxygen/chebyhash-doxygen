@@ -3,7 +3,7 @@ PROJECT_BRIEF          = "Experimental hashing library"
 PROJECT_VERSION        = "0.0.5"
 
 # Paths (relative to project root)
-OUTPUT_DIRECTORY       = docs/ChebyHash/Doxygen/generated
+OUTPUT_DIRECTORY       = doxygen/doxygen-out/chebyhash
 INPUT                  = src/ChebyHash
 
 # Input files

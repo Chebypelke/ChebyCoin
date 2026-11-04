@@ -1,4 +1,4 @@
 build/
 output/
 .vscode/
-docs/*/Doxygen/generated
+doxygen/doxygen-out/*

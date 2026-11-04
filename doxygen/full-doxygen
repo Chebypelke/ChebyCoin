@@ -1,0 +1,41 @@
+PROJECT_NAME           = "ChebyCoin"
+PROJECT_BRIEF          = "Experimental cryptocurrency and blockchain simulator"
+PROJECT_VERSION        = "0.0.5"
+
+# Paths (relative to project root)
+OUTPUT_DIRECTORY       = doxygen/doxygen-out/full/
+INPUT                  = src/
+
+# Input files
+FILE_PATTERNS          = *.h *.hpp *.cpp *.cc *.cxx
+RECURSIVE              = YES
+EXTENSION_MAPPING      = hpp=C++ h=C++
+
+# Extraction
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+
+# Documentation
+MARKDOWN_SUPPORT       = YES
+JAVADOC_AUTOBRIEF      = YES
+
+# Warnings
+WARNINGS               = YES
+WARN_IF_UNDOCUMENTED   = YES
+WARN_NO_PARAMDOC       = YES
+
+# GENERATE
+GENERATE_HTML          = YES
+HTML_OUTPUT            = html
+GENERATE_LATEX         = YES 
+LATEX_OUTPUT           = latex 
+GENERATE_XML           = YES 
+XML_OUTPUT             = xml
+
+# Source browser
+SOURCE_BROWSER         = YES
+INLINE_SOURCES         = YES
+
+# Encoding
+INPUT_ENCODING         = UTF-8
