@@ -299,8 +299,8 @@ else
         errors)
             build_loglevel-errors
             ;;
-        sillent)
-            build_loglevel-sillent
+        silent)
+            build_loglevel-silent
             ;;
         *)
             echo "Unknown --log-level: $LOG_LEVEL"

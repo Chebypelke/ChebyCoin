@@ -8,26 +8,26 @@ project(ChebyCoin LANGUAGES CXX)
 
 # ChebyHash
 
-add_library(ChebyHash STATIC
+add_library(chebyhash-lib STATIC
     src/ChebyHash/ChebyHash32.cpp
     src/ChebyHash/ChebyHash64.cpp
     src/ChebyHash/ChebyHash128/Hash128.cpp
     src/ChebyHash/ChebyHash128/ChebyHash128.cpp
 )
-target_include_directories(ChebyHash PUBLIC
+target_include_directories(chebyhash-lib PUBLIC
     ${PROJECT_SOURCE_DIR}/src
 )
 
 # ChebySignature
 
-add_library(ChebySignature STATIC
+add_library(chebysignature-lib STATIC
     src/ChebySignature/ChebySignature.cpp
 )
-target_include_directories(ChebySignature PUBLIC
+target_include_directories(chebysignature-lib PUBLIC
     ${PROJECT_SOURCE_DIR}/src
 )
-target_link_libraries(ChebySignature PUBLIC
-    ChebyHash
+target_link_libraries(chebysignature-lib PUBLIC
+    chebyhash-lib
 )
 
 
@@ -58,8 +58,8 @@ add_executable(main-app
     src/main.cpp
 )
 target_link_libraries(main-app PRIVATE
-    ChebyHash 
-    ChebySignature
+    chebyhash-lib 
+    chebysignature-lib
 )
 
 # Testers(only tester and dependencies)
@@ -71,7 +71,7 @@ add_executable(chebyhash32-tester
     src/ChebyHash/Testers/ChebyHash32Tester.cpp
 )
 target_link_libraries(chebyhash32-tester PRIVATE 
-    ChebyHash
+    chebyhash-lib
 )
 
 # ChebyHash64 Tester 
@@ -82,7 +82,7 @@ add_executable(chebyhash64-tester
     src/ChebyHash/Testers/ChebyHash64Tester.cpp
 )
 target_link_libraries(chebyhash64-tester PRIVATE 
-    ChebyHash
+    chebyhash-lib
 )
 
 # ChebyHash128 Tester 
@@ -93,7 +93,7 @@ add_executable(chebyhash128-tester
     src/ChebyHash/Testers/ChebyHash128Tester.cpp
 )
 target_link_libraries(chebyhash128-tester PRIVATE 
-    ChebyHash
+    chebyhash-lib
 )
 
 # ChebyChain Tester 
@@ -109,8 +109,8 @@ add_executable(chebychain-tester
     src/ChebyChain/Testers/ChebyChainTester.cpp
 )
 target_link_libraries(chebychain-tester PRIVATE
-    ChebyHash 
-    ChebySignature
+    chebyhash-lib 
+    chebysignature-lib
 )
 
 # ChebySignature Tester - only chain tester binary
@@ -121,8 +121,8 @@ add_executable(chebysignature-tester
     src/ChebySignature/Testers/ChebySignatureTester.cpp
 )
 target_link_libraries(chebysignature-tester PRIVATE
-    ChebyHash 
-    ChebySignature
+    chebyhash-lib 
+    chebysignature-lib
 )
 
 
@@ -137,6 +137,6 @@ add_executable(chebywallet-tester
     src/Transactions/Transactions.cpp
 )
 target_link_libraries(chebywallet-tester PRIVATE
-    ChebyHash 
-    ChebySignature
+    chebyhash-lib 
+    chebysignature-lib
 )
