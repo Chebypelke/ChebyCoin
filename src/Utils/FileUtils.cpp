@@ -1,5 +1,5 @@
-#include "Utils.hpp"
-#include "../ChebyHash/ChebyHash.hpp"
+#include <Utils/FileUtils.hpp>
+#include <ChebyHash/ChebyHash.hpp>
 #include <cstdint>
 #include <fstream>
 

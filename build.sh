@@ -189,7 +189,6 @@ build_loglevel-full()
         echo "Build successful!"
     else
         echo "Build failed!"
-        echo "Try '--log-level errors' for see error"
         exit "$STATUS"
     fi
 
@@ -197,7 +196,15 @@ build_loglevel-full()
         echo "Missing '--docs', skipping..."
     else 
         echo "Docs: $DOCS"
-        doxygen "doxygen/$DOCS-doxygen"
+        doxygen "docs/doxygen/$DOCS-doxyfile" 
+        STATUS=$?
+
+        if [[ $STATUS -eq 0 ]]; then
+            echo "Doxygen successful!"
+        else
+            echo "Doxygen failed!"
+            exit "$STATUS"
+        fi
     fi
 }
 
@@ -207,27 +214,25 @@ build_loglevel-errors()
     echo "$BUILD_MODE, $TYPE, let's compile it!"
 
     echo "CMake configuring..."
-    cmake -S . -B build -DCMAKE_BUILD_TYPE="$BUILD_MODE" 2> /dev/null 
+    cmake -S . -B build -DCMAKE_BUILD_TYPE="$BUILD_MODE" > /dev/null 
     STATUS=$?
 
     if [[ $STATUS -eq 0 ]]; then
         echo "CMake configure successful!"
     else
         echo "CMake configure failed!"
-        echo "Try '--log-level errors' for see error"
         exit "$STATUS"
     fi
 
     echo "Building..."
 
-    cmake --build build --target "$TYPE" -j 2> /dev/null
+    cmake --build build --target "$TYPE" -j > /dev/null
     STATUS=$?
 
     if [[ $STATUS -eq 0 ]]; then
         echo "Build successful!"
     else
         echo "Build failed!"
-        echo "Try '--log-level errors' for see error"
         exit "$STATUS"
     fi
 
@@ -235,7 +240,15 @@ build_loglevel-errors()
         echo "Missing '--docs', skipping..."
     else 
         echo "Docs: $DOCS"
-        doxygen "doxygen/$DOCS-doxygen" 2> /dev/null 
+        doxygen "docs/doxygen/$DOCS-doxyfile" 1> /dev/null
+        STATUS=$?
+
+        if [[ $STATUS -eq 0 ]]; then
+            echo "Doxygen successful!"
+        else
+            echo "Doxygen failed!"
+            exit "$STATUS"
+        fi
     fi
 }
 
@@ -273,7 +286,16 @@ build_loglevel-silent()
         echo "Missing '--docs', skipping..."
     else 
         echo "Docs: $DOCS"
-        doxygen "doxygen/$DOCS-doxygen" > /dev/null 2>&1
+        doxygen "docs/doxygen/$DOCS-doxyfile" > /dev/null 2>&1
+        STATUS=$?
+
+        if [[ $STATUS -eq 0 ]]; then
+            echo "Doxygen successful!"
+        else
+            echo "Doxygen failed!"
+            echo "Try '--log-level errors' for see error"
+            exit "$STATUS"
+        fi
     fi
 }
 

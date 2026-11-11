@@ -1,4 +1,5 @@
 build/
 output/
 .vscode/
-doxygen/doxygen-out/*
+docs/doxygen/doxygen-out/*
+.cache/
