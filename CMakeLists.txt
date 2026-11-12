@@ -4,7 +4,7 @@ project(ChebyCoin LANGUAGES CXX)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-#find_package(FLTK 1.4 CONFIG REQUIRED)
+find_package(FLTK CONFIG REQUIRED)
 
 block() # Libs
     add_library(utils-lib STATIC # Not public API. Do not use this lol.
@@ -65,9 +65,14 @@ block() # Main client apps
         utils-lib
     )
 
-    #add_executable(chebyhash-gui-app
-        #
-    #)
+    add_executable(chebyhash-gui-app
+        src/Apps/ChebyHashGui/main.cpp
+        src/Apps/ChebyHashGui/window.cpp
+    )
+    target_link_libraries(chebyhash-gui-app PRIVATE
+       chebyhash-lib
+       fltk::fltk
+    )
 endblock()
 
 block() # Testers
