@@ -66,7 +66,7 @@ cmake --build build
 
 ## Project Status
 
-Current version: v0.0.6
+Current version: v0.0.7
 
 ### Implemented
 

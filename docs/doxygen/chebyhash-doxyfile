@@ -1,6 +1,6 @@
 PROJECT_NAME           = "ChebyHash"
 PROJECT_BRIEF          = "Experimental hashing library"
-PROJECT_VERSION        = "0.0.5"
+PROJECT_VERSION        = "0.0.7"
 
 # Paths (relative to project root)
 OUTPUT_DIRECTORY       = docs/doxygen/doxygen-out/chebyhash
