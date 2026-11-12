@@ -1,12 +1,12 @@
-#include "window.hpp"
+#include "CalculatorTab.hpp"
 #include <ChebyHash/ChebyHash.hpp>
-#include <FL/Fl_Choice.H>
-#include <iostream>
+#include <FL/Enumerations.H>
 #include <string>
 #include <sstream>
+#include <iomanip>
 
-ChebyHash::GuiApp::GuiApp(int w, int h, const char* title) 
-    : Fl_Double_Window(w, h, title)
+ChebyHash::GuiApp::Tabs::CalculatorTab::CalculatorTab(int x, int y, int w, int h)
+    : Fl_Group(x, y, w, h, "Calculator")
 {
     inputField = new Fl_Input(80, 40, 280, 30, "Text:");
 
@@ -16,20 +16,25 @@ ChebyHash::GuiApp::GuiApp(int w, int h, const char* title)
     hashChoice->add("ChebyHash128");
     hashChoice->value(0);
 
-    hashButton = new Fl_Button(240, 80, 120, 30, "Hash");
     outputField = new Fl_Output(80, 120, 280, 30, "Hash:");
 
-    hashButton->callback(onButtonCB, this);
-
-    this->end();
+    inputField->textfont(FL_SCREEN);
+    outputField->textfont(FL_SCREEN);
+    
+    inputField->when(FL_WHEN_CHANGED);
+    inputField->callback(onInputChanged, this);
+    hashChoice->when(FL_WHEN_CHANGED);
+    hashChoice->callback(onInputChanged, this);
 }
 
-void ChebyHash::GuiApp::onButtonCB(Fl_Widget* w, void* data) {
-    auto* app = static_cast<GuiApp*>(data);
+
+
+void ChebyHash::GuiApp::Tabs::CalculatorTab::onInputChanged(Fl_Widget* widget, void* data) {
+    auto* app = static_cast<CalculatorTab*>(data);
     app->handleHash();
 }
 
-void ChebyHash::GuiApp::handleHash() {
+void ChebyHash::GuiApp::Tabs::CalculatorTab::handleHash() {
     std::string text = inputField->value();
     std::stringstream ss;
     std::string hashResult;
@@ -46,7 +51,9 @@ void ChebyHash::GuiApp::handleHash() {
         case 2:
         {
             ChebyHash128::Hash128 hash = ChebyHash::ChebyHash128::hash(text);
-            ss << std::hex << hash.high << hash.low;
+            ss << std::hex << std::setfill('0')
+                           << std::setw(16) << hash.high 
+                           << std::setw(16) << hash.low;
             hashResult = ss.str();
             break;
         }

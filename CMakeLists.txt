@@ -67,7 +67,8 @@ block() # Main client apps
 
     add_executable(chebyhash-gui-app
         src/Apps/ChebyHashGui/main.cpp
-        src/Apps/ChebyHashGui/window.cpp
+        src/Apps/ChebyHashGui/MainWindow.cpp
+        src/Apps/ChebyHashGui/Tabs/CalculatorTab/CalculatorTab.cpp
     )
     target_link_libraries(chebyhash-gui-app PRIVATE
        chebyhash-lib
