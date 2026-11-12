@@ -4,7 +4,7 @@ PROJECT_VERSION        = "0.0.7"
 
 # Paths (relative to project root)
 OUTPUT_DIRECTORY       = docs/doxygen/doxygen-out/chebyhash
-INPUT                  = src/ChebyHash
+INPUT                  = src/Modules/Chebyhash include/ChebyHash
 
 # Input files
 FILE_PATTERNS          = *.h *.hpp *.cpp *.cc *.cxx
